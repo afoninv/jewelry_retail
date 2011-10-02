@@ -1,0 +1,64 @@
+﻿{% extends "jr_base.html" %}
+
+{% block style %} 
+
+        .catalogue_menu{
+            float: left; width:15%; margin-top:50px; }
+        .catalogue_menu ul{
+            margin: 0 0 5px 0;
+            padding: 0 0 2px 0;
+            list-style-type: none;}
+        .catalogue_menu ul li a{
+            color: #333;
+            display: block;
+            height: 32px;
+            padding: 4px 0 4px 14px;
+            text-decoration: none;
+            background-color:#fff;}
+        .catalogue_menu ul li a:hover{
+            background-color: #666;
+            color:#fff;}
+
+        .right_pane{
+            float: right; width:15%; border-style:inset; border-width:5px; border-color: #0000a0; padding: 10px; margin-top:75px;}
+
+        .catalogue_view{
+            margin: 0 20% 0 15%; }
+
+    {% block more_style %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block content %}
+
+    {% block catalogue %}
+        <div class="catalogue_menu">
+                <ul>
+                    <li> <a href="/catalogue/rings/">Кольца</a>
+                    <li> <a href="/catalogue/earrings/">Серьги</a>
+                    <li> <a href="/catalogue/chainlets/">Цепочки</a>
+                    <li> <a href="/catalogue/bracelets/">Браслеты</a>
+                    <li> <a href="/catalogue/necklaces/">Колье</a>
+                    <li> <a href="/catalogue/barrettes/">Заколки</a>
+                    <li> <a href="/catalogue/cufflinks/">Запонки</a>
+                    <li> <a href="/catalogue/tieclips/">Зажимы для галстука</a>
+                </ul>
+        </div>
+    {% endblock %}
+
+    {% block right_pane %}
+        <div class="right_pane">это панелька (справа) для разных там новостей и акций
+            <p style="text-align:center; font-size:20">Новогодние скидки!</p>
+            <p> Мы рады предложить Вам последние новинки со скидкой до 40% - узнайте больше о специальном предложении <a href="#">здесь</a>.
+        </div>
+    {% endblock %}
+
+    {% block catalogue_view %}
+        <div class="catalogue_view">это выбранное содержимое каталога (в середине)</div>
+    {% endblock %}
+
+
+<br style="clear:both"/>
+
+{% endblock %}

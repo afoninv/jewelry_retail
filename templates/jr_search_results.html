@@ -1,0 +1,60 @@
+﻿{% extends "jr_catalogue.html" %}
+
+{% block more_style %} 
+        .view_item{
+            float: left;
+            border-style:solid; border-width:thin; border-color:#666;
+            padding:10px; margin: 10px;}
+
+        .view_item a:link, .view_item a:visited{
+            text-decoration: none;
+            color:white; }
+
+        .view_item a:hover{
+            color:red; } 
+
+         .photo{
+            color:white; 
+            background-color: #000050; 
+            padding: 25px 25px 25px 25px;
+            text-align: center;
+            text-decoration: none;}
+
+{% endblock %}
+
+{% block catalogue_view %}
+    <div class="catalogue_view">
+
+    {% if results.object_list %}
+
+        {% for item in results.object_list %}
+            <div class="view_item">
+                <a href="/catalogue/{{item.j_type.name_eng}}s/{{item.id}}"><div class="photo"><img src="{{ item.thumbnail }}"></div></a><div style="text-align: center">{{ item.j_type}} "{{ item.name }}"<br> ({{ item.price }} р.)</div>
+            </div>
+        {% endfor %}
+
+        <br style="clear:both">
+
+        <div class="pagination">
+           <span class="step-links">
+               {% if results.has_previous %}
+                   <a href="?page={{ results.previous_page_number }}">previous</a>
+               {% endif %}
+
+               <span class="current">
+                   Page {{ results.number }} of {{ results.paginator.num_pages }}.
+               </span>
+
+               {% if results.has_next %}
+                   <a href="?page={{ results.next_page_number }}">next</a>
+               {% endif %}
+           </span>
+       </div>
+
+    {% else %}
+        <div> No search results! </div>
+
+    {% endif %}
+
+    </div>
+{% endblock %}

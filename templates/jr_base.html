@@ -1,0 +1,67 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ru">
+
+
+<head>
+    <style>
+        .top_menu{
+            width: 100%;
+ }
+        .top_menu ul{
+            margin: 0; padding: 0;
+            float: left; }
+         .top_menu ul li{
+            display: inline; }
+        .top_menu ul li a{
+            float: left; text-decoration: none;
+            color: white;
+            margin: 2; 
+            padding: 10.5px 11px;
+            background-color: #000050; }
+        .top_menu ul li a:visited{
+            color: white;}
+        .top_menu ul li a:hover, .menu ul li .current{
+            color: #fff;
+            background-color:#0b75b2;}
+        
+        {% block style %}{% endblock %}
+
+    </style>
+
+    <title>
+        {% block title %} Ювелирный магазин {% endblock %}
+    </title>
+
+</head>
+
+
+<body>
+
+    {% block header %}
+        <a href="/" style="text-decoration:none; color:white"><div style="width:100%; padding-top:30px; padding-bottom:30px; font-family:Verdana; font-size:40px; text-align:center; color:white; background-color: #000050;">Серебряная река</div></a>
+    {% endblock %}
+
+    {% block top_menu %}
+        <div class="top_menu">
+            <ul>
+                <li><a href="/catalogue/search">Поиск</a> </li>
+                <li><a href="#">Контакты</a> </li>
+                <li><a href="#">Партнерам</a> </li>
+                <li><a href="#">Полезная информация</a> </li>
+                <li><a href="#">Как оформить заказ</a> </li>
+                <li><a href="#">Личный кабинет</a> </li>
+                <li><a href="#">Корзина</a> </li>
+            </ul>
+        </div><br style="clear:left"/>
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block footer %}
+        <hr>
+        <p>это футер</p>
+    {% endblock %}
+
+</body>
+</html>

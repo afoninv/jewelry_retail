@@ -1,0 +1,30 @@
+﻿{% extends "jr_catalogue.html" %}
+
+{% block catalogue_view %}
+
+<div style="margin: 0 150px 0 150px">
+<form action="" method="get">
+            {{ form.errors }}
+        <div class="field">
+            {{ form.j_type.errors }}
+            <label for="id_j_type">Тип:</label>
+            {{ form.j_type }}
+        </div>
+        <div class="field">
+            {{ form.gem.errors }}
+            <label for="id_gem">Вставка:</label>
+            {{ form.gem }}
+        </div>
+        <div class="field">
+            {{ form.price_min.errors }}
+            {{ form.price_max.errors }}
+            <label for="id_price_min">Цена от</label> {{ form.price_min }} <label for="id_price_max">до</label> {{ form.price_max }}
+        </div>
+
+        <input type="submit" value="Submit">    
+</form>
+</div>
+
+{% endblock %}
+
+
