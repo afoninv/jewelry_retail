@@ -266,7 +266,7 @@ class Article(models.Model):
         verbose_name_plural = u'изделия'
 
     def __unicode__(self):
-        return u"%s" % (self.name)
+        return u"%s (%s)" % (self.name, self.j_type)
 
     def gem_summary(self):
         g_list=[]
