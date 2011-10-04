@@ -244,11 +244,8 @@ class JewelryModel(models.Model):
 class Article(models.Model):
     name = models.CharField(max_length=30, verbose_name=u'Название')
     article_code = models.CharField(max_length=15, blank=True, verbose_name=u'Артикул')
-#    model = models.ForeignKey(JewelryModel, editable=False, verbose_name=u'Модель. Вы не должны видеть это поле, обратитесь к разработчику.')
-#    initial_model = models.ForeignKey(JewelryModel, related_name='article_set_initial', editable=False, verbose_name=u'Первичная модель. Вы не должны видеть это поле, обратитесь к разработчику.')
-    initial_model = models.ForeignKey(JewelryModel, blank=True, null=True, related_name='article_set_initial', verbose_name=u'Первичная модель. Вы не должны видеть это поле, обратитесь к разработчику.')
-    model = models.ForeignKey(JewelryModel, blank=True, null=True, verbose_name=u'Модель. Вы не должны видеть это поле, обратитесь к разработчику.')
-    
+    model = models.ForeignKey(JewelryModel, blank=True, null=True, editable=False, verbose_name=u'Модель. Вы не должны видеть это поле, обратитесь к разработчику.')
+    initial_model = models.ForeignKey(JewelryModel, related_name='article_set_initial', editable=False, verbose_name=u'Первичная модель. Вы не должны видеть это поле, обратитесь к разработчику.')
     j_type = models.ForeignKey(JewelryType, verbose_name=u'Тип изделия')
     gender = models.ForeignKey(Gender, verbose_name=u'Пол')
     gems = models.ManyToManyField(Gem, through='SpecificGem', blank=True, verbose_name=u'Камни')
@@ -258,6 +255,7 @@ class Article(models.Model):
     date_on_sale = models.DateField(blank=True, null=True, verbose_name=u'Выставлено на продажу', help_text=u'Артикулы без даты или с будущей датой не будут отображаться на сайте.')
     supplier = models.ForeignKey(Supplier, verbose_name=u'Поставщик')
     notes = models.TextField(blank=True, verbose_name=u'Заметки', help_text=u'Для служебного использования.')
+
     image_one = models.ImageField(upload_to='articles/', blank=True, verbose_name=u'Фотография')
     image_two = models.ImageField(upload_to='articles/', blank=True, verbose_name=u'Фотография')
     image_three = models.ImageField(upload_to='articles/', blank=True, verbose_name=u'Фотография')
@@ -308,24 +306,37 @@ class Suite(models.Model):
 
     name = models.CharField(max_length=30, unique=True, verbose_name=u'Название')
     article_code = models.CharField(max_length=15, blank=True, verbose_name=u'Артикул')
-#    model = models.ForeignKey(JewelryModel, blank=True, editable=False, verbose_name=u'Модель. Вы не должны видеть это поле, обратитесь к разработчику.')
     articles = models.ManyToManyField(Article, blank=True, verbose_name=u'Изделия', help_text=u'Гарнитур может быть пустым для удобства последующего ввода данных.')
     gender = models.ForeignKey(Gender, blank=True, null=True, verbose_name=u'Пол', help_text=u'Определяется по входящим в гарнитур артикулам. Гарнитур с артикулами, предназначенными для разных полов, не сохранится.')
 #    gems = models.ManyToManyField(Gem, through='SpecificGem', blank=True, editable=False, verbose_name=u'Камни')
-#    metal = models.ForeignKey(Metal, blank=True, null=True, editable=False, verbose_name=u'Металл')
     site_description = models.TextField(verbose_name=u'Описание на сайте')
     price = models.PositiveIntegerField(verbose_name=u'Цена')
     date_on_sale = models.DateField(blank=True, null=True, verbose_name=u'Выставлено на продажу', help_text=u'Артикулы без даты или с будущей датой не будут отображаться на сайте.')
-#    supplier = models.ForeignKey(Supplier, blank=True, null=True, editable=False, verbose_name=u'Поставщик')
     notes = models.TextField(blank=True, verbose_name=u'Заметки', help_text=u'Для служебного использования.')
 
     model = models.ForeignKey(JewelryModel, blank=True, null=True, verbose_name=u'Модель. Вы не должны видеть это поле, обратитесь к разработчику.')
     metal = models.ForeignKey(Metal, blank=True, null=True, verbose_name=u'Металл')
     supplier = models.ForeignKey(Supplier, blank=True, null=True, verbose_name=u'Поставщик')
 
+    image_one = models.ImageField(upload_to='suites/', blank=True, verbose_name=u'Фотография гарнитура')
+
     class Meta:
         verbose_name = u'гарнитур'
         verbose_name_plural = u'гарнитуры'
+
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
+
+class Collection(models.Model):
+    name = models.CharField(max_length=30, unique=True, verbose_name=u'Название')
+    articles = models.ManyToManyField(Article, blank=True, verbose_name=u'Изделия')
+    site_description = models.TextField(verbose_name=u'Описание на сайте')
+    notes = models.TextField(blank=True, verbose_name=u'Заметки', help_text=u'Для служебного использования.')
+
+    class Meta:
+        verbose_name = u'коллекция'
+        verbose_name_plural = u'коллекции'
 
     def __unicode__(self):
         return u'%s' % (self.name)

@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 import re
 
-from jewelry_retail.data_storage.models import Supplier, Gem, Metal, Article, SpecificGem, Suite, JewelryType, JewelryModel, create_article_code, change_article_code_gem, change_article_code_model, change_article_code_type
+from jewelry_retail.data_storage.models import Supplier, Gem, Metal, Article, SpecificGem, Suite, JewelryType, JewelryModel, Collection, create_article_code, change_article_code_gem, change_article_code_model, change_article_code_type
 
 class JRSuiteCustomAdminForm(forms.ModelForm):
     class Meta:
@@ -185,6 +185,12 @@ class SuiteInline(admin.TabularInline):
     verbose_name = u'Гарнитур'
     verbose_name_plural = u'Гарнитуры'
 
+class CollectionInline(admin.TabularInline):
+    model = Collection.articles.through
+    extra = 1
+    verbose_name = u'Коллекция'
+    verbose_name_plural = u'Коллекции'
+
 """
 Won't work - SimpleListFilter is in Django dev version, can't import def lookups(self, request, model_admin):
 
@@ -224,21 +230,23 @@ class SpecificGemListFilter(SimpleListFilter):
 
 class ArticleAdmin(admin.ModelAdmin):
     form = JRArticleCustomAdminForm
-    inlines = (SpecificGemInline, SuiteInline,)
-    list_display = ('article_code', 'name', 'j_type', 'gender', 'metal', 'specificgem', 'suite', 'date_on_sale', 'price')
-        #'specificgem' and 'suite' above (attributes of this admin model) execute separate SQL statements for each row. Consider removing in case of performance isues
+    inlines = (SpecificGemInline, SuiteInline, CollectionInline, )
+    list_display = ('article_code', 'name', 'j_type', 'gender', 'metal', 'specificgem', 'suite', 'collection', 'date_on_sale', 'price')
+        #'specificgem', 'collection' and 'suite' above (attributes of this admin model) execute separate SQL statements for each row. Consider removing in case of performance isues
     list_display_links = ('article_code', 'name', 'j_type')
     ordering = ('date_on_sale',)
     list_filter = ('j_type', 'gender', 'metal')
     search_fields = ('article_code', 'name')
     fieldsets = (
         (None, {
-            'fields': (('name', 'article_code', 'model', 'initial_model'), ('j_type', 'gender', 'metal'), ('price', 'supplier', 'date_on_sale'), 'site_description', 'notes', 'image_one', 'image_two', 'image_three')
+            'fields': (('name', 'article_code'), ('j_type', 'gender', 'metal'), ('price', 'supplier', 'date_on_sale'), 'site_description', 'notes', 'image_one', 'image_two', 'image_three')
         }),
     )
+    readonly_fields = ('article_code', )
+
 
     def specificgem(self, obj):
-        s=[]
+        s = []
         spec_gems = SpecificGem.objects.filter(article=obj.id).order_by('-major', '-size')
         for spec_gem in spec_gems:
             gem_props = []
@@ -249,15 +257,20 @@ class ArticleAdmin(admin.ModelAdmin):
         return u"; ".join(s)
 
     def suite(self, obj):
-        s=[]
+        s = []
         for i in obj.suite_set.all():
             s.append(i.name)
         return u"; ".join(s)
 
+    def collection(self, obj):
+        s = []
+        for i in obj.collection_set.all():
+            s.append(i.name)
+        return u"; ".join(s)
 
 class SuiteAdmin(admin.ModelAdmin):
     form = JRSuiteCustomAdminForm
-    fields = ('name', 'article_code', 'model', 'articles', 'gender', 'metal', 'price', 'date_on_sale', 'supplier', 'site_description', 'notes', )
+    fields = ('name', 'article_code', 'articles', 'gender', 'metal', 'price', 'date_on_sale', 'supplier', 'site_description', 'notes', 'image_one')
     filter_horizontal = ('articles',)
     readonly_fields = ('gender', 'metal', 'model', 'supplier', 'article_code')
 
@@ -268,6 +281,7 @@ class JewelryTypeAdmin(admin.ModelAdmin):
 admin.site.register(Supplier)
 admin.site.register(Gem)
 admin.site.register(Metal)
+admin.site.register(Collection)
 admin.site.register(JewelryType, JewelryTypeAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Suite, SuiteAdmin)
