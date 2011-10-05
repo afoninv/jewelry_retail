@@ -84,7 +84,7 @@ def catalogue_search(request):
                 search_results = list(search_results)
                 if gem <> 'all': 
                     for item in search_results[:]:
-                        if gem not in item.gems: search_results.remove(item)
+                        if gem not in item.gems(): search_results.remove(item)
                 for item in search_results:
                     item.j_type_eng = u'suite'
 
@@ -103,7 +103,7 @@ def catalogue_search(request):
                 search_results2 = list(search_results2)
                 if gem <> 'all': 
                     for item in search_results2[:]:
-                        if gem not in item.gems: search_results2.remove(item)
+                        if gem not in item.gems(): search_results2.remove(item)
                 for item in search_results2:
                     item.j_type_eng = u'suite'
 
