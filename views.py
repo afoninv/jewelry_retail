@@ -44,11 +44,16 @@ def catalogue_view(request, j_type, j_id=None):
     else:
 
         if j_type == u'suites': 
-            search_results = Suite.objects.all()
+            search_results = list(Suite.objects.all())
             j_type_eng = u'suite'
+            for item in search_results:
+                item.j_type_eng = u'suite'
         else: 
+            search_results = list(Suite.objects.all())
             search_results = Article.objects.filter(j_type=j_type)
-            j_type_eng = j_type.name_eng
+            for item in search_results:
+                item.j_type_eng = j_type.name_eng
+
         search_pages = Paginator(search_results, 10)
         page = request.GET.get('page', 1)
         try:
