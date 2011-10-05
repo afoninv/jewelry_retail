@@ -35,10 +35,10 @@ def catalogue_view(request, j_type, j_id=None):
 
         if j_type == u'suites': 
             item = Suite.objects.get(id=j_id)
-            j_type_eng = u'suite'
+            item.j_type_eng = u'suite'
         else: 
             item = Article.objects.get(id=j_id)
-            j_type_eng = j_type.name_eng
+            item.j_type_eng = j_type.name_eng
         return render_to_response("jr_catalogue_id.html", {"item": item}, context_instance=RequestContext(request))
 
     else:
@@ -63,7 +63,7 @@ def catalogue_view(request, j_type, j_id=None):
         except EmptyPage:
             search_results_paginated = search_pages.page(search_pages.num_pages)
 
-        return render_to_response('jr_search_results.html', {'results': search_results_paginated, 'j_type_eng': j_type_eng}, context_instance=RequestContext(request))
+        return render_to_response('jr_search_results.html', {'results': search_results_paginated}, context_instance=RequestContext(request))
 
 
 def catalogue_search(request):
