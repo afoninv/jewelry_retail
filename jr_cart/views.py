@@ -1,11 +1,12 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext
 
 from jewelry_retail.data_storage.models import Article, Suite
 
 def cart(request):
     request.session['cart'] = request.session.get('cart', [])
-    return render_to_response("jr_cart.html", {'items': request.session['cart']})
+    return render_to_response("jr_cart.html", {'items': request.session['cart']}, context_instance=RequestContext(request))
 
 def cart_add(request, j_type=None, j_id=None):
 # do input sanitization
@@ -25,7 +26,7 @@ def cart_add(request, j_type=None, j_id=None):
 
 def cart_clear(request):
     request.session['cart'] = []
-    return render_to_response("jr_cart.html")
+    return render_to_response("jr_cart.html", context_instance=RequestContext(request))
 
 def cart_remove(request, j_type=None, j_id=None):
 # do input sanitization

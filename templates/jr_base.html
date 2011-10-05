@@ -50,7 +50,7 @@
                 <li><a href="#">Полезная информация</a> </li>
                 <li><a href="#">Как оформить заказ</a> </li>
                 <li><a href="#">Личный кабинет</a> </li>
-                <li><a href="/cart/">Корзина</a> </li>
+                <li><a href="/cart/">Корзина {% load jr_cart %}{% cart_count request %}</a> </li>
             </ul>
         </div><br style="clear:left"/>
     {% endblock %}
