@@ -1,0 +1,10 @@
+﻿{% extends "jr_catalogue.html" %}
+
+    {% block catalogue_view %}
+        <div class="catalogue_view">это корзина</div>
+<ul>
+    {% for item in items %}
+        <li><img src="{{item.thumbnail}}"> <a href="/catalogue/{{item.j_type_eng}}s/{{item.id}}/">{{item.name}}<a> (тут вся информация, которая нужна) <a href="/cart/remove/{{item.j_type_eng}}/{{item.id}}/">(удалить)</a>
+    {% endfor %}
+</ul>
+    {% endblock %}

@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from jewelry_retail.data_storage.models import JewelryType, Article, SpecificGem, Gem
+from jewelry_retail.data_storage.models import JewelryType, Article, SpecificGem, Gem, Suite
 from jewelry_retail.forms import JRAdvancedSearchForm
 
 
@@ -26,17 +26,28 @@ def catalogue(request):
 def catalogue_view(request, j_type, j_id=None):
 
     # Check if url contains proper english alias for jewelry type
-    j_type = JewelryType.objects.filter(name_eng=j_type[0:-1])
+    # SANITIZATION!
+    if j_type <> u'suites': j_type = JewelryType.objects.get(name_eng=j_type[0:-1])
     if not j_type: return HttpResponseRedirect("/catalogue/")
 
     if j_id:
 
-        item = Article.objects.get(id=j_id)
-        return render_to_response("jr_catalogue_id.html", {"item": item})
+        if j_type == u'suites': 
+            item = Suite.objects.get(id=j_id)
+            j_type_eng = u'suite'
+        else: 
+            item = Article.objects.get(id=j_id)
+            j_type_eng = j_type.name_eng
+        return render_to_response("jr_catalogue_id.html", {"item": item, 'j_type_eng': j_type_eng})
 
     else:
 
-        search_results = Article.objects.filter(j_type=j_type)
+        if j_type == u'suites': 
+            search_results = Suite.objects.all()
+            j_type_eng = u'suite'
+        else: 
+            search_results = Article.objects.filter(j_type=j_type)
+            j_type_eng = j_type.name_eng
         search_pages = Paginator(search_results, 10)
         page = request.GET.get('page', 1)
         try:
@@ -46,7 +57,7 @@ def catalogue_view(request, j_type, j_id=None):
         except EmptyPage:
             search_results_paginated = search_pages.page(search_pages.num_pages)
 
-        return render_to_response('jr_search_results.html', {'results': search_results_paginated})
+        return render_to_response('jr_search_results.html', {'results': search_results_paginated, 'j_type_eng': j_type_eng})
 
 
 def catalogue_search(request):
@@ -81,3 +92,4 @@ def catalogue_search(request):
             return render_to_response('jr_search_form.html', {'form': form})
     form = JRAdvancedSearchForm()
     return render_to_response('jr_search_form.html', {'form': form})
+

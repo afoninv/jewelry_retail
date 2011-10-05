@@ -24,6 +24,8 @@ urlpatterns = patterns('',
     ('^catalogue/search/$', catalogue_search),
     ('^catalogue/(?P<j_type>\w+)/$', catalogue_view),
     ('^catalogue/(?P<j_type>\w+)/(?P<j_id>\d+)/$', catalogue_view),
+    (r'^cart/', include("jewelry_retail.jr_cart.urls")),
+
 
     (r'^images/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'c:/python26/jewelry_retail/images/'}),
 

@@ -327,6 +327,10 @@ class Suite(models.Model):
     def __unicode__(self):
         return u'%s' % (self.name)
 
+    def thumbnail(self):
+        thumb_path = self.image_one.url if self.image_one else u'/images/special/placeholder1.jpg'
+        return thumb_path
+
 
 class Collection(models.Model):
     name = models.CharField(max_length=30, unique=True, verbose_name=u'Название')
