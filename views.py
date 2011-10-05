@@ -39,7 +39,7 @@ def catalogue_view(request, j_type, j_id=None):
         else: 
             item = Article.objects.get(id=j_id)
             j_type_eng = j_type.name_eng
-        return render_to_response("jr_catalogue_id.html", {"item": item, 'j_type_eng': j_type_eng}, context_instance=RequestContext(request))
+        return render_to_response("jr_catalogue_id.html", {"item": item}, context_instance=RequestContext(request))
 
     else:
 
