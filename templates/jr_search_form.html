@@ -21,6 +21,15 @@
             <label for="id_price_min">Цена от</label> {{ form.price_min }} <label for="id_price_max">до</label> {{ form.price_max }}
         </div>
 
+        <div class="field">
+            {{ form.metal.errors }}
+            <label for="id_metal">Металл</label> {{ form.metal }}
+        </div>
+        <div class="field">
+            {{ form.gender.errors }}
+            <label for="id_gender">Пол</label> {{ form.gender }}
+        </div>
+
         <input type="submit" value="Submit">    
 </form>
 </div>
