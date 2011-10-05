@@ -12,9 +12,9 @@ register.inclusion_tag("jr_cart_add_to_cart.html")(add_to_cart)
 
 
 def cart_count(request):
-    cart_item_count = len(request.session['cart'])
+    cart_item_count = len(request.session.get('cart', []))
     cart_item_pricetotal = 0
-    for item in request.session['cart']:
+    for item in request.session.get('cart', []):
         cart_item_pricetotal += item.price
     return {"cart_item_count": cart_item_count, "cart_item_pricetotal": cart_item_pricetotal}
 

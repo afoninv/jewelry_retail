@@ -38,7 +38,7 @@ def cart_remove(request, j_type=None, j_id=None):
         item = Article.objects.get(id=j_id)
         item.j_type_eng = unicode(item.j_type.name_eng)    
 
-    items = request.session.get('cart', [])
+    items = request.session.get('cart', []) or []
     if item in items: 
         items.remove(item)
         request.session['cart'] = items
