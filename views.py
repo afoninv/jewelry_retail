@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 
-from jewelry_retail.data_storage.models import JewelryType, Article, SpecificGem, Gem, Suite
+from jewelry_retail.data_storage.models import JewelryType, Article, SpecificGem, Gem, Suite, Gender
 from jewelry_retail.forms import JRAdvancedSearchForm
 
 
@@ -70,14 +70,51 @@ def catalogue_search(request):
             price_min = cd.get('price_min')
             price_max = cd.get('price_max')
             gem = cd.get('gem')
-
+            gender = Gender.objects.get(gender_code=cd.get('gender'))
             if not price_min: price_min = 0
-            search_results = Article.objects.filter(j_type=cd['j_type'], price__gte=price_min)
 
-            if price_max: search_results = search_results.filter(price__lte=price_max)
+            if cd.get('j_type') == 'suite':
+                search_results = Suite.objects.filter(price__gte=price_min, gender=gender)
+                if price_max: search_results = search_results.filter(price__lte=price_max)
+                search_results = list(search_results)
+                if gem <> 'all': 
+                    for item in search_results[:]:
+                        if gem not in item.gems: search_results.remove(item)
+                for item in search_results:
+                    item.j_type_eng = u'suite'
 
-            gem_filter = SpecificGem.objects.filter(gem=Gem.objects.get(name=gem)).values('article').query
-            search_results = search_results.filter(id__in=gem_filter)
+            elif cd.get('j_type') == 'all':
+                search_results = Article.objects.filter(price__gte=price_min, gender=gender)
+                if price_max: search_results = search_results.filter(price__lte=price_max)
+                if gem <> 'all': 
+                    gem_filter = SpecificGem.objects.filter(gem=Gem.objects.get(id=gem)).values('article').query
+                    search_results = search_results.filter(id__in=gem_filter)
+                search_results = list(search_results)
+                for item in search_results:
+                    item.j_type_eng = item.j_type.name_eng
+
+                search_results2 = Suite.objects.filter(price__gte=price_min, gender=gender)
+                if price_max: search_results2 = search_results2.filter(price__lte=price_max)
+                search_results2 = list(search_results2)
+                if gem <> 'all': 
+                    for item in search_results2[:]:
+                        if gem not in item.gems: search_results2.remove(item)
+                for item in search_results2:
+                    item.j_type_eng = u'suite'
+
+                search_results = search_results + search_results2
+
+            else:
+                j_type= JewelryType.objects.get(name_eng=cd.get('j_type'))
+                search_results = Article.objects.filter(j_type=j_type, price__gte=price_min, gender=gender)
+                if price_max: search_results = search_results.filter(price__lte=price_max)
+                if gem <> 'all': 
+                    gem_filter = SpecificGem.objects.filter(gem=Gem.objects.get(id=gem)).values('article').query
+                    search_results = search_results.filter(id__in=gem_filter)
+                search_results = list(search_results)
+                for item in search_results:
+                    item.j_type_eng = item.j_type.name_eng
+
 
             search_pages = Paginator(search_results, 10)
             page = request.GET.get('page', 1)
@@ -90,7 +127,7 @@ def catalogue_search(request):
 
             return render_to_response('jr_search_results.html', {'results': search_results_paginated}, context_instance=RequestContext(request))
         else:
-            return render_to_response('jr_search_form.html', {'form': form})
+            return render_to_response('jr_search_form.html', {'form': form}, context_instance=RequestContext(request))
     form = JRAdvancedSearchForm()
     return render_to_response('jr_search_form.html', {'form': form}, context_instance=RequestContext(request))
 

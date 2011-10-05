@@ -5,8 +5,7 @@
 <head>
     <style>
         .top_menu{
-            width: 100%;
- }
+            width: 100%; }
         .top_menu ul{
             margin: 0; padding: 0;
             float: left; }
@@ -21,10 +20,20 @@
         .top_menu ul li a:visited{
             color: white;}
         .top_menu ul li a:hover, .menu ul li .current{
-            color: #fff;
             background-color:#0b75b2;}
         
         {% block style %}{% endblock %}
+
+
+#search-bar{padding:10px; background:#90b557; clear:both;}
+#search-bar .search-style{font-size:16px; color:#999999; border:solid 1px #CCCCCC; padding:4px;}
+
+ul.search-options, ul.search-options li{padding:0; border:0; margin:0; list-style:none;}
+ul.search-options li a{float:left; margin-right:1px; width:auto; background:#000050; padding:8px; color:white; text-decoration:none;}
+.selected a{background:#90b557;}
+ul.search-options li.selected a{background:#0b75b2;}
+
+
 
     </style>
 

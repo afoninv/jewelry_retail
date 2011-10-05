@@ -331,6 +331,11 @@ class Suite(models.Model):
         thumb_path = self.image_one.url if self.image_one else u'/images/special/placeholder1.jpg'
         return thumb_path
 
+    def gems(self):
+        gem_list = []
+        for article in self.articles.all():
+            if list(SpecificGem.objects.filter(article=article)): gem_list += list(SpecificGem.objects.filter(article=article))
+        return gem_list
 
 class Collection(models.Model):
     name = models.CharField(max_length=30, unique=True, verbose_name=u'Название')
