@@ -23,9 +23,11 @@ class JRAdvancedSearchForm(forms.Form):
         return cl_data
 
     def clean(self):
-        price_min=self.cleaned_data.get('price_min', None)
-        price_max=self.cleaned_data.get('price_max', None)
-        if price_min and price_max and price_min > price_max:
+        if not self.cleaned_data.get('price_min'): self.cleaned_data['price_min'] = 0
+        price_min=self.cleaned_data['price_min']
+        price_max=self.cleaned_data.get('price_max')
+
+        if price_max and (price_min > price_max):
             raise forms.ValidationError(u'Минимальная цена больше максимальной')
         return self.cleaned_data
 
