@@ -35,24 +35,17 @@ def catalogue_view(request, j_type, j_id=None):
 
         if j_type == u'suites': 
             item = Suite.objects.get(id=j_id)
-            item.j_type_eng = u'suite'
         else: 
             item = Article.objects.get(id=j_id)
-            item.j_type_eng = j_type.name_eng
         return render_to_response("jr_catalogue_id.html", {"item": item}, context_instance=RequestContext(request))
 
     else:
 
         if j_type == u'suites': 
-            search_results = list(Suite.objects.all())
-            j_type_eng = u'suite'
-            for item in search_results:
-                item.j_type_eng = u'suite'
+            search_results = Suite.objects.all()
+
         else: 
-            search_results = list(Suite.objects.all())
             search_results = Article.objects.filter(j_type=j_type)
-            for item in search_results:
-                item.j_type_eng = j_type.name_eng
 
         search_pages = Paginator(search_results, 10)
         page = request.GET.get('page', 1)
@@ -85,8 +78,6 @@ def catalogue_search(request):
                 if gem <> 'all': 
                     for item in search_results[:]:
                         if gem not in item.gems(): search_results.remove(item)
-                for item in search_results:
-                    item.j_type_eng = u'suite'
 
             elif cd.get('j_type') == 'all':
                 search_results = Article.objects.filter(price__gte=price_min, gender=gender)
@@ -95,8 +86,6 @@ def catalogue_search(request):
                     gem_filter = SpecificGem.objects.filter(gem=Gem.objects.get(id=gem)).values('article').query
                     search_results = search_results.filter(id__in=gem_filter)
                 search_results = list(search_results)
-                for item in search_results:
-                    item.j_type_eng = item.j_type.name_eng
 
                 search_results2 = Suite.objects.filter(price__gte=price_min, gender=gender)
                 if price_max: search_results2 = search_results2.filter(price__lte=price_max)
@@ -104,8 +93,6 @@ def catalogue_search(request):
                 if gem <> 'all': 
                     for item in search_results2[:]:
                         if gem not in item.gems(): search_results2.remove(item)
-                for item in search_results2:
-                    item.j_type_eng = u'suite'
 
                 search_results = search_results + search_results2
 
@@ -117,9 +104,6 @@ def catalogue_search(request):
                     gem_filter = SpecificGem.objects.filter(gem=Gem.objects.get(id=gem)).values('article').query
                     search_results = search_results.filter(id__in=gem_filter)
                 search_results = list(search_results)
-                for item in search_results:
-                    item.j_type_eng = item.j_type.name_eng
-
 
             search_pages = Paginator(search_results, 10)
             page = request.GET.get('page', 1)

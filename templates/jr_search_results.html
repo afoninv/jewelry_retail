@@ -29,7 +29,7 @@
 
         {% for item in results.object_list %}
             <div class="view_item">
-                <a href="/catalogue/{{item.j_type_eng}}s/{{item.id}}"><div class="photo"><img src="{{ item.thumbnail }}"></div></a><div style="text-align: center">{{ item.j_type}} "{{ item.name }}"<br> ({{ item.price }} р.)</div>
+                <a href="/catalogue/{{item.j_type_url}}s/{{item.id}}"><div class="photo"><img src="{{ item.thumbnail }}"></div></a><div style="text-align: center">{{ item.j_type}} "{{ item.name }}"<br> ({{ item.price }} р.)</div>
             </div>
         {% endfor %}
 

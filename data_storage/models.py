@@ -154,6 +154,7 @@ def change_article_code_type(instance):
 
     return None
 
+
 class Supplier(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name=u'Поставщик', help_text=u'Обязательно только название, остальные поля по желанию.')
     address = models.CharField(max_length=100, blank=True, verbose_name=u'Адрес')
@@ -174,7 +175,6 @@ class JewelryType(models.Model):
     name = models.CharField(max_length=20, unique=True, verbose_name=u'Тип изделий')
     name_eng = models.CharField(max_length=20, unique=True, verbose_name=u'Тип изделий (на английском)')
     j_type_code = CustomJTypeCode(max_length=1, unique=True, verbose_name=u'Код изделия', help_text=u'Состоит из одной буквы. Используется в артикуле.')
-
 
     class Meta:
         verbose_name = u'тип изделия'
@@ -236,6 +236,7 @@ class JewelryModel(models.Model):
     def __unicode__(self):
         return self.model_code
 
+
 #class Price(models.Model):
 #    price = models.PositiveIntegerField()
 #    date_effective = models.DateField()
@@ -260,7 +261,6 @@ class Article(models.Model):
     image_two = models.ImageField(upload_to='articles/', blank=True, verbose_name=u'Фотография')
     image_three = models.ImageField(upload_to='articles/', blank=True, verbose_name=u'Фотография')
 
-
     class Meta:
         verbose_name = u'изделие'
         verbose_name_plural = u'изделия'
@@ -281,6 +281,10 @@ class Article(models.Model):
     def thumbnail(self):
         thumb_path = self.image_one.url if self.image_one else u'/images/special/placeholder1.jpg'
         return thumb_path
+
+    def j_type_url(self):
+        return unicode(self.j_type.name_eng)
+
 
 class SpecificGem(models.Model):
     article = models.ForeignKey(Article, verbose_name=u'Артикул')
@@ -336,6 +340,10 @@ class Suite(models.Model):
         for article in self.articles.all():
             if list(SpecificGem.objects.filter(article=article)): gem_list += list(SpecificGem.objects.filter(article=article))
         return gem_list
+
+    def j_type_url(self):
+        return u'suite'
+
 
 class Collection(models.Model):
     name = models.CharField(max_length=30, unique=True, verbose_name=u'Название')
