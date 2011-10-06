@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
+from django.core.mail import send_mail
 
 from jewelry_retail.data_storage.models import Article, Suite
 
@@ -27,6 +28,11 @@ def cart_add(request, j_type=None, j_id=None):
 def cart_clear(request):
     request.session['cart'] = []
     return render_to_response("jr_cart.html", context_instance=RequestContext(request))
+
+def cart_message(request):
+    send_mail('Test mail', 'Testing email from alwaysdata.com \n Generally it should work, next one will be utf-8', 'jewelryretail@alwaysdata.net',
+    ['afoninv@mail.ru'], fail_silently=False)
+    return HttpResponse("mail should be sent; no exceptions are raised at least)
 
 def cart_remove(request, j_type=None, j_id=None):
 # do input sanitization
