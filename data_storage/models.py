@@ -314,8 +314,8 @@ class Order(models.Model):
     items = models.ManyToManyField(OrderItem, verbose_name=u'Товары')
     customer = models.ForeignKey(Customer, blank=True, null=True, verbose_name=u'Клиент')
     contact_name = models.CharField(max_length=25, verbose_name=u'Контактное имя')
-    delivery_address = models.TextField(verbose_name=u'Адрес доставки')
     contact_phone = models.CharField(max_length=25, verbose_name=u'Контактный телефон')
+    delivery_address = models.TextField(verbose_name=u'Адрес доставки')
     notes = models.TextField(blank=True, verbose_name=u'Заметки', help_text=u'Для служебного использования.')
 
     class Meta:

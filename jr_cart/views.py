@@ -6,11 +6,30 @@ from django.core.mail import send_mail
 from jewelry_retail.data_storage.models import Article, Suite
 from jewelry_retail.jr_cart.forms import OrderForm
 
+def translate_to_orderitems(cart_item=None):
+    #
+    # Takes one Article instance or Suite instance. Returns list of OrderItem instances.
+    # No special pricing here!
+    # 
+    if not cart_item: return []
+    
+    if cart_item.j_type_eng <> 'suite':
+        item = cart_item
+        order_items = [OrderItem(item_id=item.id, name=item.name, j_type=item.j_type, quantity=1, price=item.price, gender=item.gender, metal=item.metal, gems=u';'.join(list(item.specificgemarticle_set.all())) , supplier=item.supplier, site_description=item.site_description)]
+
+    else:
+        item = cart_item
+        order_items = [OrderItem(item_id=item.id, name=item.name, j_type=item.j_type(), quantity=1, price=item.price, gender=item.gender, metal=item.metal, gems=u';'.join(list(item.specificgemsuite_set.all())) , supplier=item.supplier, site_description=item.site_description)]
+
+        for item in cart_item.articles.all():
+            order_items.append(OrderItem(item_id=item.id, name=item.name, j_type=item.j_type, quantity=1, price=item.price, gender=item.gender, metal=item.metal, gems=u';'.join(list(item.specificgemarticle_set.all())) , supplier=item.supplier, site_description=item.site_description, part_of_suite=))
+
 def cart(request):
     cart = request.session.get('cart') or []
     if cart:
-
-        order_list = []  #[cart[0]]
+        item = cart[0]
+        if i
+        order_list = [OrderItem(item_id=item.id, name=item.name, j_type=item.j_type, )]
 
         for item in cart[1:]:
             for orderitem in order:
