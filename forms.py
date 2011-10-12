@@ -7,7 +7,7 @@ for j_type in JewelryType.objects.all():
 
 CHOICES_GEM = [("all", "Любая")]
 for gem in Gem.objects.all():
-    CHOICES_GEM.append((gem.id, gem.name))
+    CHOICES_GEM.append((gem.name_eng, gem.name))
 
 class JRAdvancedSearchForm(forms.Form):
     j_type = forms.ChoiceField(choices=CHOICES_J_TYPE)
@@ -18,7 +18,7 @@ class JRAdvancedSearchForm(forms.Form):
 
     def clean_gender(self):
         cl_data = self.cleaned_data['gender']
-        if cl_data not in ['M', 'F', 'C', 'U']:
+        if cl_data not in ['men', 'women', 'children', 'universal']:
             raise forms.ValidationError(u'Неверный выбор пола')
         return cl_data
 

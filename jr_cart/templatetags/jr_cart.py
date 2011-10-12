@@ -4,8 +4,8 @@ import datetime
 
 register = template.Library()
 
-def add_to_cart(item, j_type_eng):
-    link = "/cart/add/"+j_type_eng+u'/'+unicode(item)
+def add_to_cart(item):
+    link = "/cart/add"+item.get_absolute_url()
     return {"link": link}
 
 register.inclusion_tag("jr_cart_add_to_cart.html")(add_to_cart)

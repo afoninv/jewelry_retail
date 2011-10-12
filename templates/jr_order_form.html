@@ -1,0 +1,29 @@
+﻿{% extends "jr_catalogue.html" %}
+
+{% block catalogue_view %}
+
+<form id="jr_order" name="jr_order" action="" method="post">{% csrf_token %}
+
+        <div class="field">
+            {{ form.contact_name.errors }}
+            <label for="id_contact_name">Имя:</label>
+            {{ form.contact_name }}
+        </div>
+        <div class="field">
+            {{ form.contact_phone.errors }}
+            <label for="id_contact_phone">Контактный телефон:</label>
+            {{ form.contact_phone }}
+        </div>
+        <div class="field">
+            {{ form.delivery_address.errors }}
+            <label for="id_delivery_address">Адрес доставки:</label>
+            {{ form.delivery_address }}
+        </div>
+
+
+
+        <input type="submit" value="Подвердить">    
+
+</form>
+
+{% endblock %}

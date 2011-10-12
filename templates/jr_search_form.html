@@ -5,7 +5,7 @@
 <script language="javascript">
 function init() {
 document.getElementById('id_gender').setAttribute("type", "hidden");
-document.getElementById('id_gender').value = "F"
+document.getElementById('id_gender').value = "women"
 document.jr_advanced_search.j_type.options.length = 1;
 document.jr_advanced_search.j_type.options[1]=new Option("Гарнитур", "suite", false, false);
 document.jr_advanced_search.j_type.options[2]=new Option("Цепочка", "chainlet", false, false);
@@ -27,7 +27,7 @@ function setSearchOptions(idElement){
 			tab.setAttribute("class","selected");
 			switch(i){
 				case(i=1): 
-				search_option.value="F";
+				search_option.value="women";
 				document.jr_advanced_search.j_type.options[1]=new Option("Гарнитур", "suite", false, false);
 				document.jr_advanced_search.j_type.options[2]=new Option("Цепочка", "chainlet", false, false);
 				document.jr_advanced_search.j_type.options[3]=new Option("Браслет", "bracelet", false, false);
@@ -37,7 +37,7 @@ function setSearchOptions(idElement){
 				document.jr_advanced_search.j_type.options[7]=new Option("Заколка", "barrette", false, false);
 				break
 				case(i=2): 
-				search_option.value="M";
+				search_option.value="men";
 				document.jr_advanced_search.j_type.options[1]=new Option("Цепочка", "chainlet", false, false);
 				document.jr_advanced_search.j_type.options[2]=new Option("Браслет", "bracelet", false, false);
 				document.jr_advanced_search.j_type.options[3]=new Option("Кольцо", "ring", false, false);
@@ -45,14 +45,14 @@ function setSearchOptions(idElement){
 				document.jr_advanced_search.j_type.options[5]=new Option("Зажим для галстука", "tieclip", false, false);
 				break
 				case(i=3): 
-				search_option.value="C";
+				search_option.value="children";
 				document.jr_advanced_search.j_type.options[1]=new Option("Цепочка", "chainlet", false, false);
 				document.jr_advanced_search.j_type.options[2]=new Option("Браслет", "bracelet", false, false);
 				document.jr_advanced_search.j_type.options[3]=new Option("Кольцо", "ring", false, false);
 				document.jr_advanced_search.j_type.options[4]=new Option("Заколка", "barrette", false, false);
 				break
 				case(i=4): 
-				search_option.value="U";
+				search_option.value="universal";
 				break
 			}
 

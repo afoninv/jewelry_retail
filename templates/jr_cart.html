@@ -2,13 +2,25 @@
 
     {% block catalogue_view %}
         <div class="catalogue_view">это корзина</div>
-<ul>
-    {% for item in items %}
-        <li>
-            <img src="{{item.thumbnail}}"> 
-            <a href="/catalogue/{{item.j_type_url}}s/{{item.id}}/">{{item.name}}</a> 
-            (тут вся информация, которая нужна) 
-            <a href="/cart/remove/{{item.j_type_url}}/{{item.id}}/">(удалить)</a>
-    {% endfor %}
-</ul>
+
+    {% if items %}
+
+        <ul>
+        {% for item in items %}
+            <li>
+                <img src="{{item.thumbnail}}"> 
+                <a href="{{item.get_absolute_url}}">{{item.name}}</a> 
+                (тут вся информация, которая нужна) 
+                <a href="/cart/remove{{item.get_absolute_url}}">(удалить)</a>
+        {% endfor %}
+        </ul>
+
+        <br><a href="order/">заказать</a> <a href="clear/">очистить корзину</a>
+
+    {% else %}
+
+        Cart's empty
+
+    {% endif %}
+
     {% endblock %}
