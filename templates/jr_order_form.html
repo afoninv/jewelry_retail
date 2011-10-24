@@ -1,6 +1,14 @@
-﻿{% extends "jr_catalogue.html" %}
+﻿{% extends "jr_cart.html" %}
 
-{% block catalogue_view %}
+{% block order_form %}
+
+<p>Ваш заказ на сумму
+{% ifnotequal request.session.cart_price request.session.cart_sum %}
+<span style="text-decoration: line-through;">{{request.session.cart_sum}} </span>
+<span style="font-weight: bold;">{{request.session.cart_price}}</span>
+{% else %}
+{{ request.session.cart_price }}
+{% endifnotequal %} р.</p>
 
 <form id="jr_order" name="jr_order" action="" method="post">{% csrf_token %}
 
@@ -26,4 +34,9 @@
 
 </form>
 
+{% endblock %}
+
+{% block suppress_cart_actions %}
+{% endblock %}
+{% block suppress_cart_actions_2 %}
 {% endblock %}

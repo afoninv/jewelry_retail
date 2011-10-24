@@ -6,7 +6,6 @@
 <div style="float:left">{% if item.image_three %}<img src="{{ item.image_three.url }}">{% else %}<img src="/images/special/placeholder3.jpg">{% endif %}</div>
 <p> <img src="{{ item.thumbnail }}">
 <p>{% if item.image_two %}<img src="{{ item.image_two.url }}">{% else %}<img src="/images/special/placeholder2.jpg">{% endif %}
-<br style="clear:left">
 
 <p style="text-align:center"> <strong>{{ item.name }}</strong>
 <p> {{ item.j_type }} 
@@ -15,6 +14,17 @@
 <p>Металл: {{ item.metal }}, вставка: {{ item.gem_summary }}
 <p>Цена: {{ item.price }}
 <br>
+    <form id="jr_id" name="jr_id" action="" method="post">{% csrf_token %}
+        {% if item.j_type_eng = 'ring' %}
+        <div class="field">
+            {{ form.size.errors }}
+            <label for="id_size">Размер:</label>
+            {{ form.size }}
+        </div>
+        {% endif %}
+
+        <input type="submit" value="Добавить в корзину">    
+    </form>
 <br>
 <br>
 <p>{{ item.site_description }}
@@ -23,6 +33,6 @@
 <br>
 <hr>
 
-<p>Закажите по телефону сейчас +7 905 5555555 или {% load jr_cart %}{% add_to_cart item %}
+<p>Закажите по телефону сейчас +7 905 5555555 или добавьте в корзину.
 
 </div>{% endblock %}

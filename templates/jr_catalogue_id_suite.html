@@ -1,0 +1,43 @@
+﻿{% extends "jr_catalogue.html" %}
+
+{% block catalogue_view %}<div class="catalogue_view">
+
+<p>
+<div style="float:left">{% if item.image_three %}<img src="{{ item.image_three.url }}">{% else %}<img src="/images/special/placeholder3.jpg">{% endif %}</div>
+<p> <img src="{{ item.thumbnail }}">
+<p>{% if item.image_two %}<img src="{{ item.image_two.url }}">{% else %}<img src="/images/special/placeholder2.jpg">{% endif %}
+
+<p style="text-align:center"> <strong>{{ item.name }}</strong>
+<p> {{ item.j_type }} 
+        ({{ item.metal }}, 
+        {{ item.gem_summary }})
+<p>Металл: {{ item.metal }}, вставка: {{ item.gem_summary }}
+<p>Цена: {{ item.price }}
+<br>
+    <form id="jr_id" name="jr_id" action="" method="post">{% csrf_token %}
+        <div class="field">
+            {{ form.size.errors }}
+            <label for="id_size">Размер кольца:</label>
+            {{ form.size }}
+        </div>
+
+        <div class="field">
+            {{ form.suite_contents.errors }}
+            <label for="id_suite_contents">Состав гарнитура:</label>
+            {{ form.suite_contents }}
+        </div>
+
+
+        <input type="submit" value="Добавить в корзину">    
+    </form>
+<br>
+<br>
+<p>{{ item.site_description }}
+<br>
+<br>
+<br>
+<hr>
+
+<p>Закажите по телефону сейчас +7 905 5555555 или добавьте в корзину.
+
+</div>{% endblock %}

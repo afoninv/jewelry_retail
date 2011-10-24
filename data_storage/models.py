@@ -26,11 +26,17 @@ CHOICES_ZODIAC = [
 
 CHOICES_P_TYPE = [
     (u"base", u"Базовая цена, руб."), 
-    (u"percent", u"Скидка / наценка, %"), 
-    (u"absolute", u"Скидка / наценка, руб."), 
+    (u"factor", u"Скидка / наценка, %"), 
+    (u"delta", u"Скидка / наценка, руб."), 
     (u"unavailable", u"Снято с продажи")
 ]
 
+CHOICES_RING_SIZE = [
+    (17, u"17"), 
+    (17.5, u"17,5"), 
+    (18, u"18"), 
+    (18.5, u"18,5"), 
+]
 
 class Supplier(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name=u'Поставщик', help_text=u'Обязательно только название, остальные поля по желанию.')
@@ -202,7 +208,7 @@ class Suite(models.Model):
         return thumb_path
 
     def j_type(self):
-        return u'Гарнитур'
+        return u'гарнитур'
 
     def j_type_eng(self):
         return u'suite'
@@ -213,6 +219,17 @@ class Suite(models.Model):
     def get_absolute_url(self):
         return "/catalogue/%s/%i/" % (self.j_type_eng(), self.id)
 
+    def get_factor(self):
+        factor = -5 #default
+
+        for pricing in self.pricingsuite_set.all():
+            if pricing.start_date <= datetime.date.today() and pricing.p_type == 'factor':
+                if pricing.end_date and pricing.end_date >= datetime.date.today(): 
+                    factor = pricing.amount
+                    break
+                elif not pricing.end_date: factor = pricing.amount
+
+        return factor
 
 class SpecificGemSuite(models.Model):
     product = models.ForeignKey(Suite, verbose_name=u'Гарнитур')
@@ -251,7 +268,7 @@ class Collection(models.Model):
 class PricingArticle(models.Model):
     product = models.ForeignKey(Article, verbose_name=u'Изделие')
     start_date = models.DateField(verbose_name=u'Дата начала')
-    end_date = models.DateField(verbose_name=u'Дата конца')
+    end_date = models.DateField(blank=True, null=True, verbose_name=u'Дата конца')
     amount = models.IntegerField(verbose_name=u'Значение')
     p_type = models.CharField(max_length=11, choices=CHOICES_P_TYPE, verbose_name=u'Тип шаблона')
 
@@ -265,7 +282,7 @@ class PricingArticle(models.Model):
 class PricingSuite(models.Model):
     product = models.ForeignKey(Suite, verbose_name=u'Гарнитур')
     start_date = models.DateField(verbose_name=u'Дата начала')
-    end_date = models.DateField(verbose_name=u'Дата конца')
+    end_date = models.DateField(blank=True, null=True, verbose_name=u'Дата конца')
     amount = models.IntegerField(verbose_name=u'Значение')
     p_type = models.CharField(max_length=11, choices=CHOICES_P_TYPE[1:4], verbose_name=u'Тип шаблона')
 
@@ -292,6 +309,7 @@ class OrderItem(models.Model):
     name = models.CharField(max_length=30, verbose_name=u'Название')
     j_type = models.CharField(max_length=20, verbose_name=u'Тип')
     part_of_suite = models.ForeignKey('self', blank=True, null=True, verbose_name=u'Входит в гарнитур')
+    size = models.FloatField(choices=CHOICES_RING_SIZE, blank=True, null=True, verbose_name=u'Размер')
     quantity = CustomPositiveSmallIntegerField(verbose_name=u'Количество')
     price = CustomPositiveSmallIntegerField(verbose_name=u'Цена')
     gender = models.ForeignKey(Gender, verbose_name=u'Пол')
@@ -301,17 +319,30 @@ class OrderItem(models.Model):
     site_description = models.TextField(verbose_name=u'Описание на сайте')
 
     class Meta:
-        verbose_name = u'товар'
-        verbose_name_plural = u'товары'
+        verbose_name = u'заказанный товар'
+        verbose_name_plural = u'заказанные товары'
 
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.j_type)
+
+    def self_object(self):
+        to_return = Article.objects.get(id=self.item_id) if self.j_type <> u'гарнитур' else Suite.objects.get(id=self.item_id)
+        return to_return
+
+    def thumbnail(self):
+        return self.self_object().thumbnail()
+
+    def get_absolute_url(self):
+        return self.self_object().get_absolute_url()
+
+    def suite_contents(self):
+        return OrderItem.objects.filter(part_of_suite=self)
 
 class Order(models.Model):
     order_datetime = models.DateTimeField(verbose_name=u'Дата и время заказа')
     order_sum = CustomPositiveSmallIntegerField(verbose_name=u'Сумма заказа')
     is_completed = models.BooleanField(verbose_name=u'Заказ выполнен')
-    items = models.ManyToManyField(OrderItem, verbose_name=u'Товары')
+    items = models.ManyToManyField(OrderItem, verbose_name=u'Заказанные товары')
     customer = models.ForeignKey(Customer, blank=True, null=True, verbose_name=u'Клиент')
     contact_name = models.CharField(max_length=25, verbose_name=u'Контактное имя')
     contact_phone = models.CharField(max_length=25, verbose_name=u'Контактный телефон')
@@ -323,6 +354,6 @@ class Order(models.Model):
         verbose_name_plural = u'заказы'
 
     def __unicode__(self):
-        return u'%s шт., %s руб (%s)' % (self.items.count(), self.order_sum, self.order_date)
+        return u'%s шт., %s руб (%s)' % (self.items.count(), self.order_sum, self.order_datetime)
 
 

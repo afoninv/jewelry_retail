@@ -4,7 +4,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 
 from jewelry_retail.data_storage.models import JewelryType, Article, SpecificGemArticle, SpecificGemSuite, Gem, Suite, Gender
-from jewelry_retail.forms import JRAdvancedSearchForm
+from jewelry_retail.forms import JRAdvancedSearchForm, JRIdSuiteForm, JRIdArticleForm
+from jewelry_retail.jr_cart.views import cart_add_suite, cart_add_article
 
 
 def mainpage(request):
@@ -45,20 +46,52 @@ def catalogue_view(request, j_type, j_id=None):
 
     return render_to_response('jr_search_results.html', {'results': search_results_paginated}, context_instance=RequestContext(request))
 
-def id_view(request, j_type, j_id=0):
-
-    if j_type <> u'suite': 
-        try:
-            JewelryType.objects.get(name_eng=j_type)
-        except JewelryType.DoesNotExist:
-            return HttpResponseRedirect("/")
+def id_suite_view(request, j_id=0):
 
     try:
-        item = Suite.objects.get(id=j_id) if j_type == u'suite' else Article.objects.get(id=j_id)
-    except (Suite.DoesNotExist, Article.DoesNotExist):
-        return HttpResponseRedirect("/%s" % j_type)
-    else:
-        return render_to_response("jr_catalogue_id.html", {"item": item}, context_instance=RequestContext(request))
+        item = Suite.objects.get(id=j_id)
+    except (Suite.DoesNotExist):
+        return HttpResponseRedirect("/catalogue/suites/")
+
+    if request.method == "POST" and request.POST:
+        form = JRIdSuiteForm(item.articles.all(), request.POST)
+        if form.is_valid():
+            cart_add_suite(request=request, form=form, item=item)
+            return HttpResponseRedirect("/cart/")
+
+        else:
+        # form not valid; redraw
+            return render_to_response('jr_catalogue_id_suite.html', {"item": item, 'form': form}, context_instance=RequestContext(request))
+
+    form = JRIdSuiteForm(item.articles.all())
+    return render_to_response("jr_catalogue_id_suite.html", {"item": item, 'form': form}, context_instance=RequestContext(request))
+
+
+def id_article_view(request, j_type, j_id=0):
+
+    try:
+        j_type = JewelryType.objects.get(name_eng=j_type)
+    except JewelryType.DoesNotExist:
+        return HttpResponseRedirect("/")
+
+    try:
+        item = Article.objects.get(id=j_id, j_type=j_type)
+    except (Article.DoesNotExist):
+        return HttpResponseRedirect("/catalogue/%ss" % j_type.name_eng)
+
+
+    if request.method == "POST" and request.POST:
+        form = JRIdArticleForm(request.POST)
+        if form.is_valid():
+            cart_add_article(request=request, form=form, item=item)
+            return HttpResponseRedirect("/cart/")
+
+        else:
+        # form not valid; redraw
+            return render_to_response('jr_catalogue_id_article.html', {"item": item, 'form': form}, context_instance=RequestContext(request))
+
+    form = JRIdArticleForm()
+    return render_to_response("jr_catalogue_id_article.html", {"item": item, 'form': form}, context_instance=RequestContext(request))
 
 
 def catalogue_search(request):

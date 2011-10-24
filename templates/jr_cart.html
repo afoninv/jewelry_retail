@@ -1,25 +1,44 @@
 ﻿{% extends "jr_catalogue.html" %}
 
+
     {% block catalogue_view %}
-        <div class="catalogue_view">это корзина</div>
+        <div class="catalogue_view">
+        {% block order_form %}
+            Ваша корзина:
+        {% endblock %}
+        </div>
 
     {% if items %}
 
         <ul>
         {% for item in items %}
             <li>
+            {% if item.part_of_suite %}
+            ----
+            {% endif %}
+
                 <img src="{{item.thumbnail}}"> 
                 <a href="{{item.get_absolute_url}}">{{item.name}}</a> 
-                (тут вся информация, которая нужна) 
-                <a href="/cart/remove{{item.get_absolute_url}}">(удалить)</a>
+
+                ({{item.j_type}}{% if item.size %}, {{item.size}}{% endif %})
+                {{item.gems}} {{item.metal}} {{item.price}} р.
+
+        {% block suppress_cart_actions %}
+            {% if not item.part_of_suite %}
+                <a href="/cart/remove/{{item.number}}">(удалить)</a>
+            {% endif %}
+        {% endblock %}
+
         {% endfor %}
         </ul>
 
+        {% block suppress_cart_actions_2 %}
         <br><a href="order/">заказать</a> <a href="clear/">очистить корзину</a>
+        {% endblock %}
 
     {% else %}
 
-        Cart's empty
+        Коризна пока пуста.
 
     {% endif %}
 

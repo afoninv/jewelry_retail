@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from jewelry_retail.views import mainpage, catalogue, catalogue_view, id_view, catalogue_search
+from jewelry_retail.views import mainpage, catalogue, catalogue_view, id_suite_view, id_article_view, catalogue_search
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -23,7 +23,8 @@ urlpatterns = patterns('',
     ('^catalogue/$', catalogue),
     ('^catalogue/search/$', catalogue_search),
     ('^catalogue/(?P<j_type>\w+)/$', catalogue_view),
-    ('^catalogue/(?P<j_type>\w+)/(?P<j_id>\d+)/$', id_view),
+    ('^catalogue/suite/(?P<j_id>\d+)/$', id_suite_view),
+    ('^catalogue/(?P<j_type>\w+)/(?P<j_id>\d+)/$', id_article_view),
     (r'^cart/', include("jewelry_retail.jr_cart.urls")),
 
 

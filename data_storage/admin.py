@@ -1,9 +1,9 @@
 ﻿from django.contrib import admin
 from django import forms
 from django.core.exceptions import ValidationError
-import re
+import re, datetime
 
-from jewelry_retail.data_storage.models import Supplier, JewelryType, Gender, Gem, Metal, Article, SpecificGemArticle, Suite, SpecificGemSuite, Collection
+from jewelry_retail.data_storage.models import Supplier, JewelryType, Gender, Gem, Metal, Article, SpecificGemArticle, Suite, SpecificGemSuite, Collection, PricingArticle, PricingSuite, Order, OrderItem
 
 def update_suite(instance):
     price = 0
@@ -20,19 +20,19 @@ def update_suite(instance):
 
 class ArticleCustomAdminForm(forms.ModelForm):
 #
-# This custom form is for validation and auto-completion, done in clean(),  __init__() and save()
+# This custom form is for validation and auto-completion, done in clean() here and save_model in ArticleAdmin
 #
 # For new (not-in-db-yet) article:
 #     1. check if there's conflict with existing articles with the same name:
-#         a. check if the type is busy (see clean())
+#         a. check if the type is busy 
 #         b. check if gender, metal, supplier are the same
 #             (the idea is, can't have two 'Napoli' rings or 'Napoli' silver ring and 'Napoli' golden bracelet)
-#     2. auto-create Pricing entry if price is supplied (see save())
+#     2. auto-create Pricing entry if price is supplied
 #         (the idea is, when we enter new article we in most cases want to price it anyway)
-#     3. auto-create suite if name is not unique(see save())
+#     3. auto-create suite if name is not unique
 #         (the idea is, one name - one suite)
 #
-# For existing (in-db) article (see __init()):
+# For existing (in-db) article:
 #     1. restict price to readonly
 #         (all further pricing/availability should be done externally via Pricing table and assosiated utils)
 #     2. if an article is a part of a suite: restrict name, gender, j_type, metal, supplier to readonly
@@ -114,6 +114,9 @@ class CollectionInline(admin.TabularInline):
 
 class ArticleAdmin(admin.ModelAdmin):
 #
+# This custom model is for validation and auto-completion, done in save_model() here and clean() in ArticleCustomAdminForm
+#
+#
 # What's important here is overriden save_model method that alone deals with article/suite relationships and sets initial pricing
 #
 
@@ -190,6 +193,7 @@ class ArticleAdmin(admin.ModelAdmin):
                     same_old_name_articles[0].save()
                     old_suite = Suite.objects.get(name=old_name)
                     old_suite.articles.clear()
+                    old_suite.pricingsuite_set.all().delete()
                     old_suite.delete()
 
                 elif len(same_old_name_articles) > 1:
@@ -201,11 +205,15 @@ class ArticleAdmin(admin.ModelAdmin):
                     # same_new_name_articles is reevaluated,. As we saved instance with new name, we have two articles with new name instead of one
                     new_suite = Suite(name=new_name, price=0, on_sale=False, site_description=u'')
                     new_suite.save()
+                    new_suite_init_pricing = PricingSuite(product=new_suite, start_date=datetime.date.today(), amount=-5, p_type='factor')
+                    new_suite_init_pricing.save()
                     for article in same_new_name_articles:
                         article.part_of_suite = True
                         article.save()
                         new_suite.articles.add(article)
                     update_suite(new_suite)
+
+
 
                 elif len(same_new_name_articles) > 2:
                     instance.part_of_suite = True
@@ -224,6 +232,8 @@ class ArticleAdmin(admin.ModelAdmin):
             if len(same_new_name_articles) == 1:
                 new_suite = Suite(name=new_name, price=0, on_sale=False, site_description=u'Гарнитур %s' % (new_name))
                 new_suite.save()
+                new_suite_init_pricing = PricingSuite(product=new_suite, start_date=datetime.date.today(), amount=-5, p_type='factor')
+                new_suite_init_pricing.save()
                 instance.part_of_suite = True
                 instance.save()
                 new_suite.articles.add(instance)
@@ -244,6 +254,15 @@ class ArticleAdmin(admin.ModelAdmin):
                 instance.part_of_suite = False
                 instance.save()
 
+
+        #
+        # Do initial pricing for article
+        #
+
+        if instance.price:
+            article_init_pricing = PricingArticle(product=instance, start_date=datetime.date.today(), amount=instance.price, p_type='base')
+            article_init_pricing.save()
+
 class SuiteAdmin(admin.ModelAdmin):
     inlines = (SpecificGemSuiteInline,)
     fields = ('name', 'articles', 'gender', 'metal', 'price', 'on_sale', 'supplier', 'site_description', 'notes', 'image_one', 'image_one_thumb', 'image_two', 'image_two_thumb', 'image_three', 'image_three_thumb')
@@ -259,3 +278,7 @@ admin.site.register(Collection)
 admin.site.register(JewelryType)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Suite, SuiteAdmin)
+admin.site.register(PricingArticle)
+admin.site.register(PricingSuite)
+admin.site.register(Order)
+admin.site.register(OrderItem)

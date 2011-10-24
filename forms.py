@@ -1,5 +1,5 @@
 ﻿from django import forms
-from jewelry_retail.data_storage.models import JewelryType, Gem
+from jewelry_retail.data_storage.models import JewelryType, Gem, CHOICES_RING_SIZE
 
 CHOICES_J_TYPE = [("all", "Любой"), ("suite", "Гарнитур")]
 for j_type in JewelryType.objects.all():
@@ -8,6 +8,8 @@ for j_type in JewelryType.objects.all():
 CHOICES_GEM = [("all", "Любая")]
 for gem in Gem.objects.all():
     CHOICES_GEM.append((gem.name_eng, gem.name))
+
+
 
 class JRAdvancedSearchForm(forms.Form):
     j_type = forms.ChoiceField(choices=CHOICES_J_TYPE)
@@ -31,3 +33,16 @@ class JRAdvancedSearchForm(forms.Form):
             raise forms.ValidationError(u'Минимальная цена больше максимальной')
         return self.cleaned_data
 
+
+
+class JRIdArticleForm(forms.Form):
+    size = forms.ChoiceField(choices=CHOICES_RING_SIZE, required=False)
+
+
+class JRIdSuiteForm(forms.Form):
+    size = forms.ChoiceField(choices=CHOICES_RING_SIZE)
+#    suite_contents = forms.ModelMultipleChoiceField(queryset=[])
+
+    def __init__(self, queryset=[], *args, **kwargs):
+        super(JRIdSuiteForm, self).__init__(*args, **kwargs)
+        if queryset: self.fields['suite_contents'] = forms.ModelMultipleChoiceField(queryset=queryset, widget=forms.CheckboxSelectMultiple())
