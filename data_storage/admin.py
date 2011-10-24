@@ -98,6 +98,7 @@ class SpecificGemArticleInline(admin.TabularInline):
 class SpecificGemSuiteInline(admin.TabularInline):
     model = SpecificGemSuite
     extra = 1
+    readonly_fields = ('gem', 'size', 'quantity', 'major')
     # no verbose_name since it's explicitly set in SpecificGemSuite
 
 class SuiteInline(admin.TabularInline):
@@ -111,6 +112,7 @@ class CollectionInline(admin.TabularInline):
     extra = 1
     verbose_name = u'Коллекция'
     verbose_name_plural = u'Коллекции'
+
 
 class ArticleAdmin(admin.ModelAdmin):
 #
@@ -265,20 +267,55 @@ class ArticleAdmin(admin.ModelAdmin):
 
 class SuiteAdmin(admin.ModelAdmin):
     inlines = (SpecificGemSuiteInline,)
-    fields = ('name', 'articles', 'gender', 'metal', 'price', 'on_sale', 'supplier', 'site_description', 'notes', 'image_one', 'image_one_thumb', 'image_two', 'image_two_thumb', 'image_three', 'image_three_thumb')
+    list_display = ('name', 'gender', 'metal', 'specificgemsuite', 'on_sale', 'price')
+#    fields = ('name', 'articles', 'gender', 'metal', 'price', 'on_sale', 'supplier', 'site_description', 'notes', 'image_one', 'image_one_thumb', 'image_two', 'image_two_thumb', 'image_three', 'image_three_thumb')
+    fieldsets = (
+        (None, {
+            'fields': (('name', 'articles'), ('gender', 'metal'), ('price', 'on_sale'), 'supplier', 'site_description', 'notes', ('image_one', 'image_one_thumb', 'image_two', 'image_two_thumb', 'image_three', 'image_three_thumb'))
+        }),
+    )
     filter_horizontal = ('articles',)
-    readonly_fields = ('gender', 'metal', 'supplier')
+    readonly_fields = ('name', 'gender', 'metal', 'supplier', 'articles', 'price', 'on_sale')
 
+    def specificgemsuite(self, obj):
+        s = []
+        for spec_gem in obj.specificgemsuite_set.order_by('-major', '-size'):
+            gem_props = []
+            if spec_gem.size: gem_props.append(u'%iк' % (spec_gem.size)) 
+            if spec_gem.quantity <> 1: gem_props.append(u'x%s' % (spec_gem.quantity))
+            spec_gem_string = u'%s (%s)' % (spec_gem.gem, u' '.join(gem_props)) if gem_props else u'%s' % (spec_gem.gem)
+            s.append(spec_gem_string)
+        return u"; ".join(s)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'order_datetime', 'is_completed', 'order_sum', 'order_items')
+    list_display_links = ('id', 'order_datetime')
+    list_filter = ('order_datetime', 'is_completed')
+    list_editable = ('is_completed',)
+    ordering = ('-order_datetime',)
+    fieldsets = (
+        (None, {
+            'fields': (('id',), ('order_datetime', 'order_sum', 'is_completed'), ('items',), ('customer',), ('contact_name', 'contact_phone', 'delivery_address'))
+        }),
+    )
+    filter_horizontal = ('items',)
+    readonly_fields = ('id', 'order_datetime', 'order_sum', 'items', 'customer',)
+
+    def order_items(self, obj):
+        order_items = []
+        for item in obj.items.all():
+            order_items.append(item.__unicode__())
+        return u'%i шт.: %s' % (len(order_items), u', '.join(order_items))
+
+class CollectionAdmin(admin.ModelAdmin):
+    readonly_fields = ('articles', )
 
 admin.site.register(Supplier)
 admin.site.register(Gem)
-admin.site.register(Gender)
 admin.site.register(Metal)
-admin.site.register(Collection)
-admin.site.register(JewelryType)
+admin.site.register(Collection, CollectionAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Suite, SuiteAdmin)
 admin.site.register(PricingArticle)
 admin.site.register(PricingSuite)
-admin.site.register(Order)
-admin.site.register(OrderItem)
+admin.site.register(Order, OrderAdmin)

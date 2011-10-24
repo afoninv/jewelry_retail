@@ -178,7 +178,7 @@ class SpecificGemArticle(models.Model):
 class Suite(models.Model):
     name = models.CharField(max_length=30, unique=True, verbose_name=u'Название')
     articles = models.ManyToManyField(Article, blank=True, verbose_name=u'Изделия')
-    gender = models.ForeignKey(Gender, blank=True, null=True, verbose_name=u'Пол', help_text=u'Определяется по входящим в гарнитур артикулам. Гарнитур с артикулами, предназначенными для разных полов, не сохранится.')
+    gender = models.ForeignKey(Gender, blank=True, null=True, verbose_name=u'Пол')
     metal = models.ForeignKey(Metal, blank=True, null=True, verbose_name=u'Металл')
     gems = models.ManyToManyField(Gem, through='SpecificGemSuite', blank=True, verbose_name=u'Камни')
 
