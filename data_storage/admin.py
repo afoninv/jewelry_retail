@@ -268,7 +268,6 @@ class ArticleAdmin(admin.ModelAdmin):
 class SuiteAdmin(admin.ModelAdmin):
     inlines = (SpecificGemSuiteInline,)
     list_display = ('name', 'gender', 'metal', 'specificgemsuite', 'on_sale', 'price')
-#    fields = ('name', 'articles', 'gender', 'metal', 'price', 'on_sale', 'supplier', 'site_description', 'notes', 'image_one', 'image_one_thumb', 'image_two', 'image_two_thumb', 'image_three', 'image_three_thumb')
     fieldsets = (
         (None, {
             'fields': (('name', 'articles'), ('gender', 'metal'), ('price', 'on_sale'), 'supplier', 'site_description', 'notes', ('image_one', 'image_one_thumb', 'image_two', 'image_two_thumb', 'image_three', 'image_three_thumb'))
