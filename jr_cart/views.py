@@ -152,6 +152,7 @@ def cart_order(request):
 
 
             request.session['cart'] = []
+            request.session['cart_sum'] = 0
             request.session['cart_price'] = 0
             request.session['cart_count'] = 0
         #
