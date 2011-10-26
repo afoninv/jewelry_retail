@@ -1,7 +1,7 @@
 ﻿from django.db import models
 from django.core.exceptions import ValidationError
 
-import re
+import re, datetime
 
 class CustomPositiveSmallIntegerField(models.PositiveSmallIntegerField):
     def validate(self, value, model_instance):
