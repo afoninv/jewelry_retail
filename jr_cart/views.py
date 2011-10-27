@@ -98,7 +98,7 @@ def cart_remove(request, item_number = None):
     cart_sum -= item_to_remove.price
     request.session['cart_sum'] = cart_sum
     request.session['cart_price'] = cart_sum if cart_sum < 10000 else int(cart_sum * 0.95)
-    request.session['cart_count'] = cart_count + 1
+    request.session['cart_count'] = cart_count - 1
 
     return HttpResponseRedirect("/cart/")
 

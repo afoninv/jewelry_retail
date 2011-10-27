@@ -3,23 +3,96 @@
 
 <head>
     <style>
-        .top_menu{
-            width: 100%; }
-        .top_menu ul{
-            margin: 0; padding: 0;
-            float: left; }
-         .top_menu ul li{
-            display: inline; }
-        .top_menu ul li a{
-            float: left; text-decoration: none;
-            color: white;
-            margin: 2; 
-            padding: 10.5px 11px;
-            background-color: red; }
-        .top_menu ul li a:visited{
-            color: white;}
-        .top_menu ul li a:hover, .menu ul li .current{
-            background-color:#0b75b2;}
+
+#menuh-container
+	{
+
+	top: 1em;
+	left: 1em;
+	}
+
+#menuh
+	{
+	width:100%;
+	float:left;
+	margin:2em;
+	margin-top: 1em;
+	}
+		
+#menuh a
+	{
+	text-align: center;
+	display:block;
+	border: 1px solid red;
+	white-space:nowrap;
+	margin:0;
+	padding: 0.3em;
+	}
+	
+#menuh a:link, #menuh a:visited, #menuh a:active	
+	{
+	color: white;
+	background-color: red;		
+	text-decoration:none;
+	}
+	
+#menuh a:hover						
+	{
+	color: white;
+	background-color: #d00000;	
+	text-decoration:none;
+	}	
+	
+#menuh ul
+	{
+	list-style:none;
+	margin:5;
+	padding:0;
+	float:left;
+	width:9em; }
+
+#menuh li
+	{
+	position:relative;
+	min-height: 1px;		
+	vertical-align: bottom;		
+	}
+
+#menuh ul ul
+	{
+	position:absolute;
+	z-index:500;
+	top:auto;
+	display:none;
+	padding: 1em;
+	margin:-1em 0 0 -1em;
+	}
+
+#menuh ul ul ul
+	{
+	top:0;
+	left:100%;
+	}
+
+div#menuh li:hover
+	{
+	cursor:pointer;
+	z-index:100;
+	}
+
+div#menuh li:hover ul ul,
+div#menuh li li:hover ul ul,
+div#menuh li li li:hover ul ul,
+div#menuh li li li li:hover ul ul
+{display:none;}
+
+div#menuh li:hover ul,
+div#menuh li li:hover ul,
+div#menuh li li li:hover ul,
+div#menuh li li li li:hover ul
+{display:block;}
+
+
 
         .left_side_menus{
             float: left;
@@ -58,7 +131,7 @@
 
         {% block style %}{% endblock %}
 
-#search-bar{
+{% comment %}#search-bar{
         padding:10px; 
         background:#90b557; 
         clear:both;}
@@ -66,7 +139,7 @@
         font-size:16px; 
         color:#999999; 
         border:solid 1px #CCCCCC; 
-        padding:4px;}
+        padding:4px;}{% endcomment %}
 
     ul.search-options, ul.search-options li{
         padding:0; 
@@ -90,6 +163,15 @@
 
     </style>
 
+<style type="text/css">@import url("menuh.css");</style>
+<!--[if lt IE 7]>
+<style type="text/css" media="screen">
+#menuh{float:none;}
+body{behavior:url(csshover.htc); font-size:100%;}
+#menuh ul li{float:left; width: 100%;}
+#menuh a{height:1%;font:bold 0.7em/1.4em;}
+</style>
+<![endif]-->
 
 
 
@@ -173,6 +255,67 @@ function setSearchOptions(idElement){
         <a href="/" style="text-decoration:none; color:white"><div style="width:100%; padding-top:30px; padding-bottom:30px; font-family:Verdana; font-size:40px; text-align:center; color:white; background-color: red;">Silver Boutique</div></a>
     {% endblock %}
 
+<div id="menuh-container">	
+    <div id="menuh">
+        <ul>
+            <li><a href="#" class="top_parent">Женщинам</a>
+            <ul>
+                <li><a href="#">Sub 1:1</a></li>
+                <li><a href="#" class="parent">Sub 1:2</a></li>
+                <li><a href="#">Sub 1:3</a></li>
+            </ul>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#" class="top_parent">Мужчинам</a>
+            <ul>
+                <li><a href="#">Sub 2:1</a></li>
+                <li><a href="#" class="parent">Sub 2:2</a>
+                <li><a href="#">Sub 2:3</a></li>
+            </ul>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#" class="top_parent">Детям</a>
+            <ul>
+                <li><a href="#">Sub 2:1</a></li>
+                <li><a href="#" class="parent">Sub 2:2</a>
+                <li><a href="#">Sub 2:3</a></li>
+            </ul>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#" class="top_parent">Сувениры</a>
+            <ul>
+                <li><a href="#">Sub 2:1</a></li>
+                <li><a href="#" class="parent">Sub 2:2</a>
+                <li><a href="#">Sub 2:3</a></li>
+            </ul>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#" class="top_parent">Упаковка</a>
+            <ul>
+                <li><a href="#">Sub 2:1</a></li>
+                <li><a href="#" class="parent">Sub 2:2</a>
+                <li><a href="#">Sub 2:3</a></li>
+            </ul>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#" class="top_parent">Доп. услуги</a>
+            <ul>
+                <li><a href="#">Sub 2:1</a></li>
+                <li><a href="#" class="parent">Sub 2:2</a>
+                <li><a href="#">Sub 2:3</a></li>
+            </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
 <div class="left_side_menus">
 
     <div class="side_menu_section">
@@ -184,12 +327,9 @@ function setSearchOptions(idElement){
             <li id="tab3"><a href="#" onclick="javascript:setSearchOptions(3);">Для детей</a></li>
             <li id="tab4"><a href="#" onclick="javascript:setSearchOptions(4);">Уни</a></li>
         </ul>
-        <br>
-        <br>
-        <br>
-        <br>
+        <br style="clear:both">
 
-        <div style="border-style:solid; border-width:1px; border-color: red; width:332;">
+        <div style="border-style:solid; border-width:1px; border-color: red; width:100%;">
         <form id="jr_advanced_search" name="jr_advanced_search" action="/catalogue/search/" method="get">
 
                 <div class="field">
@@ -224,7 +364,7 @@ function setSearchOptions(idElement){
                 <li><a href="#">Партнерам</a> </li>
                 <li><a href="#">Контакты</a> </li>
                 <li><a href="#">Личный кабинет</a> </li>
-                <li><a href="/cart/">Корзина {% load jr_cart %}{% cart_count request %}</a> </li>
+                <li><a href="/cart/">Корзина</a> </li>
                 <li><a href="/">Главная</a> </li>
             </ul>
         </div>
@@ -232,13 +372,11 @@ function setSearchOptions(idElement){
 
 </div>
 
-    {% block content %}
-    {% endblock %}
-
 <div class="right_side_menus">
 
     <div class="side_menu_section">
-        <div class="side_menu_header">Корзина</div>
+        <div class="side_menu_header">Корзина{% load jr_cart %}{% cart_summary request %}</div>
+        {% load jr_cart %}{% cart_list request %}
     </div>
 
     <div class="side_menu_section">
@@ -252,6 +390,9 @@ function setSearchOptions(idElement){
     <div class="side_menu_section"></div>
 
 </div>
+
+    {% block content %}
+    {% endblock %}
 
     {% block footer %}
         <hr>

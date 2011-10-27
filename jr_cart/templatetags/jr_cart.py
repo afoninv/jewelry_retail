@@ -2,9 +2,13 @@ from django import template
 
 register = template.Library()
 
-def cart_count(request):
-    cart_item_count = request.session.get('cart_count', 0)
-    cart_item_pricetotal = request.session.get('cart_price', 0)
-    return {"cart_item_count": cart_item_count, "cart_item_pricetotal": cart_item_pricetotal}
+def cart_summary(request):
+    cart_item_count = request.session.get('cart_count')
+    cart_item_count = u' (%i)' % cart_item_count if cart_item_count else u''
+    return {"cart_item_count": cart_item_count}
 
-register.inclusion_tag("jr_cart_top_menu.html")(cart_count)
+def cart_list(request):
+    return {'cart_list': (request.session.get('cart') or 'empty cart!')}
+
+register.inclusion_tag("jr_cart_summary.html")(cart_summary)
+register.inclusion_tag("jr_cart_list.html")(cart_list)
