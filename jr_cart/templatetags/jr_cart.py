@@ -8,9 +8,7 @@ def cart_summary(request):
     return {"cart_item_count": cart_item_count}
 
 def cart_list(request):
-    cart = request.session.get('cart') or []
-    if cart: return {'cart_list': cart}
-    else: return {'cart_list': u'empty cart!'}
+    return {'cart_list': request.session.get('cart') or [])
 
 register.inclusion_tag("jr_cart_summary.html")(cart_summary)
 register.inclusion_tag("jr_cart_list.html")(cart_list)

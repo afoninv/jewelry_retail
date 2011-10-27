@@ -1,5 +1,6 @@
 ﻿{% for item in cart_list%}
 <img src="{{item.thumbnail}}"> {{item.name}} ({{item.j_type}})
 <br>
-
+{% empty %}
+Корзина пуста
 {% endfor%}
