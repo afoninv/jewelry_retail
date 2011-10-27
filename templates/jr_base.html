@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="ru">
 
-
 <head>
     <style>
         .top_menu{
@@ -21,21 +20,145 @@
             color: white;}
         .top_menu ul li a:hover, .menu ul li .current{
             background-color:#0b75b2;}
-        
+
+        .left_side_menus{
+            float: left;
+            width:200px;
+            heigth:100%; }
+
+        .right_side_menus{
+            float: right;
+            width:150px;
+            heigth:100%; }
+
+        .side_menu_section{
+            padding: 5px 5px 50px 5px; }
+
+        .side_menu_header{
+            color:white;
+            background-color:red;
+            padding: 5px 5px 5px 5px; }
+
+        .side_menu_menu{
+            }
+        .side_menu_menu ul{
+            margin: 0 0 5px 0;
+            padding: 0 0 2px 0;
+            list-style-type: none;}
+        .side_menu_menu ul li a{
+            color: #333;
+            display: block;
+            height: 32px;
+            padding: 4px 0 0 5px;
+            text-decoration: none;
+            background-color:#fff;}
+        .side_menu_menu ul li a:hover{
+            background-color: #666;
+            color:#fff;}
+
         {% block style %}{% endblock %}
 
+#search-bar{
+        padding:10px; 
+        background:#90b557; 
+        clear:both;}
+#search-bar .search-style{
+        font-size:16px; 
+        color:#999999; 
+        border:solid 1px #CCCCCC; 
+        padding:4px;}
 
-#search-bar{padding:10px; background:#90b557; clear:both;}
-#search-bar .search-style{font-size:16px; color:#999999; border:solid 1px #CCCCCC; padding:4px;}
-
-ul.search-options, ul.search-options li{padding:0; border:0; margin:0; list-style:none;}
-ul.search-options li a{float:left; margin-right:1px; width:auto; background:red; padding:8px; color:white; text-decoration:none;}
-.selected a{background:#90b557;}
-ul.search-options li.selected a{background:#d00000;}
+    ul.search-options, ul.search-options li{
+        padding:0; 
+        border:0; 
+        margin:0; 
+        list-style:none;}
+    ul.search-options li a{
+        float:left; 
+        margin-right:1px; 
+        width:auto; 
+        background:red; 
+        padding:8px; 
+        color:white; 
+        text-decoration:none;}
+    .selected a{
+        background:#90b557;}
+    ul.search-options li.selected a{
+        background:#d00000;}
 
 
 
     </style>
+
+
+
+
+
+<script language="javascript">
+function init() {
+document.getElementById('id_gender').setAttribute("type", "hidden");
+document.getElementById('id_gender').value = "women"
+document.jr_advanced_search.j_type.options.length = 1;
+document.jr_advanced_search.j_type.options[1]=new Option("Гарнитур", "suite", false, false);
+document.jr_advanced_search.j_type.options[2]=new Option("Цепочка", "chainlet", false, false);
+document.jr_advanced_search.j_type.options[3]=new Option("Браслет", "bracelet", false, false);
+document.jr_advanced_search.j_type.options[4]=new Option("Кольцо", "ring", false, false);
+document.jr_advanced_search.j_type.options[5]=new Option("Серьги", "earring", false, false);
+document.jr_advanced_search.j_type.options[6]=new Option("Колье", "necklace", false, false);
+document.jr_advanced_search.j_type.options[7]=new Option("Заколка", "barrette", false, false);
+}
+window.onload = init
+
+function setSearchOptions(idElement){
+	tot_tab = 4;
+	tab = document.getElementById('tab'+idElement);
+	search_option = document.getElementById('id_gender');
+	document.jr_advanced_search.j_type.options.length = 1;
+	for(i=1; i<=4; i++){
+		if(i==idElement){
+			tab.setAttribute("class","selected");
+			switch(i){
+				case(i=1): 
+				search_option.value="women";
+				document.jr_advanced_search.j_type.options[1]=new Option("Гарнитур", "suite", false, false);
+				document.jr_advanced_search.j_type.options[2]=new Option("Цепочка", "chainlet", false, false);
+				document.jr_advanced_search.j_type.options[3]=new Option("Браслет", "bracelet", false, false);
+				document.jr_advanced_search.j_type.options[4]=new Option("Кольцо", "ring", false, false);
+				document.jr_advanced_search.j_type.options[5]=new Option("Серьги", "earring", false, false);
+				document.jr_advanced_search.j_type.options[6]=new Option("Колье", "necklace", false, false);
+				document.jr_advanced_search.j_type.options[7]=new Option("Заколка", "barrette", false, false);
+				break
+				case(i=2): 
+				search_option.value="men";
+				document.jr_advanced_search.j_type.options[1]=new Option("Цепочка", "chainlet", false, false);
+				document.jr_advanced_search.j_type.options[2]=new Option("Браслет", "bracelet", false, false);
+				document.jr_advanced_search.j_type.options[3]=new Option("Кольцо", "ring", false, false);
+				document.jr_advanced_search.j_type.options[4]=new Option("Запонки", "cufflink", false, false);
+				document.jr_advanced_search.j_type.options[5]=new Option("Зажим для галстука", "tieclip", false, false);
+				break
+				case(i=3): 
+				search_option.value="children";
+				document.jr_advanced_search.j_type.options[1]=new Option("Цепочка", "chainlet", false, false);
+				document.jr_advanced_search.j_type.options[2]=new Option("Браслет", "bracelet", false, false);
+				document.jr_advanced_search.j_type.options[3]=new Option("Кольцо", "ring", false, false);
+				document.jr_advanced_search.j_type.options[4]=new Option("Заколка", "barrette", false, false);
+				break
+				case(i=4): 
+				search_option.value="universal";
+				break
+			}
+
+
+		} else {
+			document.getElementById('tab'+i).setAttribute("class","");
+		}
+
+	}
+}
+</script>
+
+
+
 
     <title>
         {% block title %} Silver Boutique {% endblock %}
@@ -50,22 +173,85 @@ ul.search-options li.selected a{background:#d00000;}
         <a href="/" style="text-decoration:none; color:white"><div style="width:100%; padding-top:30px; padding-bottom:30px; font-family:Verdana; font-size:40px; text-align:center; color:white; background-color: red;">Silver Boutique</div></a>
     {% endblock %}
 
-    {% block top_menu %}
-        <div class="top_menu">
+<div class="left_side_menus">
+
+    <div class="side_menu_section">
+        <div class="side_menu_header">Поиск</div>
+
+        <ul class="search-options">
+            <li id="tab1" class="selected"><a href="#" onclick="javascript:setSearchOptions(1);">Для женщин</a></li>
+            <li id="tab2"><a href="#" onclick="javascript:setSearchOptions(2);">Для мужчин</a></li>
+            <li id="tab3"><a href="#" onclick="javascript:setSearchOptions(3);">Для детей</a></li>
+            <li id="tab4"><a href="#" onclick="javascript:setSearchOptions(4);">Уни</a></li>
+        </ul>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div style="border-style:solid; border-width:1px; border-color: red; width:332;">
+        <form id="jr_advanced_search" name="jr_advanced_search" action="/catalogue/search/" method="get">
+
+                <div class="field">
+                    <label for="id_j_type">Тип:</label>
+                    {{ s_form.j_type }}
+                </div>
+                <div class="field">
+                    <label for="id_gem">Вставка:</label>
+                    {{ s_form.gem }}
+                </div>
+                <div class="field">
+                    <label for="id_price_min">Цена от</label> {{ s_form.price_min }} <label for="id_price_max">до</label> {{ s_form.price_max }}
+                </div>
+
+                {{s_form.gender}}
+
+                <input type="submit" value="Найти">    
+
+        </form>
+        </div>
+        
+    </div>
+
+    <div class="side_menu_section">
+        <div class="side_menu_header">С нами удобно</div>
+        <div class="side_menu_menu">
             <ul>
-                <li><a href="/catalogue/search">Поиск</a> </li>
-                <li><a href="#">Контакты</a> </li>
-                <li><a href="#">Партнерам</a> </li>
-                <li><a href="#">Полезная информация</a> </li>
+                <li><a href="#">О магазине Silver Boutique</a> </li>
+                <li><a href="#">Поставщики</a> </li>
                 <li><a href="#">Как оформить заказ</a> </li>
+                <li><a href="#">Доставка и оплата</a> </li>
+                <li><a href="#">Партнерам</a> </li>
+                <li><a href="#">Контакты</a> </li>
                 <li><a href="#">Личный кабинет</a> </li>
                 <li><a href="/cart/">Корзина {% load jr_cart %}{% cart_count request %}</a> </li>
+                <li><a href="/">Главная</a> </li>
             </ul>
-        </div><br style="clear:left"/>
-    {% endblock %}
+        </div>
+    </div>
+
+</div>
 
     {% block content %}
     {% endblock %}
+
+<div class="right_side_menus">
+
+    <div class="side_menu_section">
+        <div class="side_menu_header">Корзина</div>
+    </div>
+
+    <div class="side_menu_section">
+        <div class="side_menu_header">Акции</div>
+            <p style="text-align:center; font-size:20">Новогодние скидки!</p>
+            <p> Мы рады предложить Вам последние новинки со скидкой до 40% - узнайте больше о специальном предложении <a href="#">здесь</a>.
+    </div>
+
+    <div class="side_menu_section"></div>
+
+    <div class="side_menu_section"></div>
+
+</div>
 
     {% block footer %}
         <hr>

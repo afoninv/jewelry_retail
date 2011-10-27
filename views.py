@@ -7,6 +7,82 @@ from jewelry_retail.data_storage.models import JewelryType, Article, SpecificGem
 from jewelry_retail.forms import JRAdvancedSearchForm, JRIdSuiteForm, JRIdArticleForm
 from jewelry_retail.jr_cart.views import cart_add_suite, cart_add_article
 
+def search_wrapper(view):
+    def wrapped_view(request, *args, **kwargs):
+        if request.method == "GET" and request.GET:
+            s_form = JRAdvancedSearchForm(request.GET)
+
+            if s_form.is_valid():
+
+                cl_data = s_form.cleaned_data
+                gender = Gender.objects.get(name_eng=cl_data.get('gender'))
+                gem = cl_data.get('gem')
+
+                filter_kwargs = {'price__gte': cl_data['price_min'], 'gender': gender}
+                if cl_data.get('price_max'): filter_kwargs['price__lte'] = cl_data['price_max']
+
+                #
+                # different cases for articles, suites or mix; kind of creepy
+                #
+                if cl_data['j_type'] == 'suite':
+                    search_results = Suite.objects.filter(**filter_kwargs)
+                    if gem <> 'all': 
+                        gem_filter = SpecificGemSuite.objects.filter(gem=Gem.objects.get(name_eng=gem)).values('product').query
+                        search_results = search_results.filter(id__in=gem_filter)
+                    search_results = list(search_results)
+
+                elif cl_data['j_type'] == 'all':
+                    search_results = Article.objects.filter(**filter_kwargs)
+                    if gem <> 'all': 
+                        gem_filter = SpecificGemArticle.objects.filter(gem=Gem.objects.get(name_eng=gem)).values('product').query
+                        search_results = search_results.filter(id__in=gem_filter)
+                    search_results = list(search_results)
+
+                    search_results2 = Suite.objects.filter(**filter_kwargs)
+                    if gem <> 'all': 
+                        gem_filter = SpecificGemSuite.objects.filter(gem=Gem.objects.get(name_eng=gem)).values('product').query
+                        search_results2 = search_results2.filter(id__in=gem_filter)
+                    search_results2 = list(search_results2)
+
+                    search_results = search_results + search_results2
+
+                else:
+                    j_type = JewelryType.objects.get(name_eng=cl_data['j_type'])
+                    filter_kwargs['j_type'] = j_type
+                    search_results = Article.objects.filter(**filter_kwargs)
+                    if gem <> 'all': 
+                        gem_filter = SpecificGemArticle.objects.filter(gem=Gem.objects.get(name_eng=gem)).values('product').query
+                        search_results = search_results.filter(id__in=gem_filter)
+                    search_results = list(search_results)
+
+                # paginate whatever list we've got and render
+                search_pages = Paginator(search_results, 10)
+                page = request.GET.get('page', 1)
+                try:
+                    search_results_paginated = search_pages.page(page)
+                except PageNotAnInteger:
+                    search_results_paginated = search_pages.page(1)
+                except EmptyPage:
+                    search_results_paginated = search_pages.page(search_pages.num_pages)
+
+                return render_to_response('jr_search_results.html', {'results': search_results_paginated, 's_form': s_form}, context_instance=RequestContext(request))
+
+            else:
+            # form not valid; redraw
+                return view(request, s_form, *args, **kwargs)
+
+        s_form = JRAdvancedSearchForm()
+        
+        return view(request, s_form, *args, **kwargs)
+
+    return wrapped_view
+
+
+def empty(request):
+
+#    form = JRAdvancedSearchForm()
+    return render_to_response("jr_base.html", context_instance=RequestContext(request))
+
 
 def mainpage(request):
 
@@ -97,11 +173,11 @@ def id_article_view(request, j_type, j_id=0):
 def catalogue_search(request):
 
     if request.method == "GET" and request.GET:
-        form = JRAdvancedSearchForm(request.GET)
+        s_form = JRAdvancedSearchForm(request.GET)
 
-        if form.is_valid():
+        if s_form.is_valid():
 
-            cl_data = form.cleaned_data
+            cl_data = s_form.cleaned_data
             gender = Gender.objects.get(name_eng=cl_data.get('gender'))
             gem = cl_data.get('gem')
 
@@ -156,8 +232,7 @@ def catalogue_search(request):
 
         else:
         # form not valid; redraw
-            return render_to_response('jr_search_form.html', {'form': form}, context_instance=RequestContext(request))
+            return render_to_response('jr_search_results.html', {'results': None}, context_instance=RequestContext(request))
 
-    form = JRAdvancedSearchForm()
-    return render_to_response('jr_search_form.html', {'form': form}, context_instance=RequestContext(request))
+    return HttpResponseRedirect("/")
 
