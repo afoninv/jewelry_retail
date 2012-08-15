@@ -7,11 +7,46 @@ from jewelry_retail.data_storage.models import JewelryType, Article, SpecificGem
 from jewelry_retail.forms import JRAdvancedSearchForm, JRIdSuiteForm, JRIdArticleForm
 from jewelry_retail.jr_cart.views import cart_add_suite, cart_add_article
 
+def imagescrollertest(request):
+    return render_to_response("imagescrollertest.html", context_instance=RequestContext(request))
+
+def gallerytest(request):
+    return render_to_response("gallerytest.html", context_instance=RequestContext(request))
+
+def testmain(request):
+
+    search_results = Article.objects.order_by('-on_sale')[0:10]
+    search_pages = Paginator(search_results, 10)
+    page = request.GET.get('page', 1)
+    try:
+        search_results_paginated = search_pages.page(page)
+    except PageNotAnInteger:
+        search_results_paginated = search_pages.page(1)
+    except EmptyPage:
+        search_results_paginated = search_pages.page(search_pages.num_pages)
+
+    return render_to_response("jr_testmain.html", {'results': search_results_paginated}, context_instance=RequestContext(request))
+
+def testfront(request):
+
+    search_results = Article.objects.order_by('-on_sale')[0:10]
+    search_pages = Paginator(search_results, 10)
+    page = request.GET.get('page', 1)
+    try:
+        search_results_paginated = search_pages.page(page)
+    except PageNotAnInteger:
+        search_results_paginated = search_pages.page(1)
+    except EmptyPage:
+        search_results_paginated = search_pages.page(search_pages.num_pages)
+
+    return render_to_response("jr_testfront.html", {'results': search_results_paginated}, context_instance=RequestContext(request))
+
+
+
 def empty(request):
 
-#    form = JRAdvancedSearchForm()
-    return render_to_response("jr_base.html", context_instance=RequestContext(request))
-
+    # return render_to_response("jr_base.html", context_instance=RequestContext(request))
+    return HttpResponseRedirect("http://www.google.com/")
 
 def mainpage(request):
 
@@ -51,6 +86,10 @@ def catalogue_view(request, j_type, j_id=None):
 
     return render_to_response('jr_search_results.html', {'results': search_results_paginated}, context_instance=RequestContext(request))
 
+def women_main(request):
+
+    return render_to_response('jr_women_main.html', context_instance=RequestContext(request))
+
 def id_suite_view(request, j_id=0):
 
     try:
@@ -84,6 +123,10 @@ def id_article_view(request, j_type, j_id=0):
     except (Article.DoesNotExist):
         return HttpResponseRedirect("/catalogue/%ss" % j_type.name_eng)
 
+    if item.part_of_suite:
+        suite_results = item.suite_set.get().articles.all().exclude(id=item.id)
+    else: suite_results = []
+        
 
     if request.method == "POST" and request.POST:
         form = JRIdArticleForm(request.POST)
@@ -93,10 +136,10 @@ def id_article_view(request, j_type, j_id=0):
 
         else:
         # form not valid; redraw
-            return render_to_response('jr_catalogue_id_article.html', {"item": item, 'form': form}, context_instance=RequestContext(request))
+            return render_to_response('jr_catalogue_id_article.html', {"item": item, 'form': form, 'results': suite_results}, context_instance=RequestContext(request))
 
     form = JRIdArticleForm()
-    return render_to_response("jr_catalogue_id_article.html", {"item": item, 'form': form}, context_instance=RequestContext(request))
+    return render_to_response("jr_catalogue_id_article.html", {"item": item, 'form': form, 'results': suite_results}, context_instance=RequestContext(request))
 
 
 def catalogue_search(request):
@@ -164,4 +207,3 @@ def catalogue_search(request):
             return render_to_response('jr_search_results.html', {'results': None}, context_instance=RequestContext(request))
 
     return HttpResponseRedirect("/")
-

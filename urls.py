@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
-from jewelry_retail.views import mainpage, catalogue, catalogue_view, id_suite_view, id_article_view, catalogue_search, empty
+from jewelry_retail.views import mainpage, catalogue, catalogue_view, id_suite_view, id_article_view, catalogue_search, empty, women_main
+from jewelry_retail.views import testmain, testfront, imagescrollertest, gallerytest
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,8 +19,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-
+    #there go main stuff
     ('^$', mainpage),
+    #('^$', empty),
     ('^empty/$', empty),
     ('^catalogue/$', catalogue),
     ('^catalogue/search/$', catalogue_search),
@@ -28,7 +30,14 @@ urlpatterns = patterns('',
     ('^catalogue/(?P<j_type>\w+)/(?P<j_id>\d+)/$', id_article_view),
     (r'^cart/', include("jewelry_retail.jr_cart.urls")),
 
+    ('^women/$', women_main),
 
-    (r'^images/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'c:/python26/jewelry_retail/images/'}),
+    # there go test designs
+    ('^testmain/$', testmain),
+    ('^testfront/$', testfront),    
+    ('^imagescrollertest/$', imagescrollertest),
+    ('^gallerytest/$', gallerytest),
+
+    #(r'^images/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'c:/python26/jewelry_retail/images/'}),
 
 )

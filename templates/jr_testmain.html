@@ -1,0 +1,539 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ru">
+
+<head>
+
+<title>Silver Boutique</title>
+
+<style type="text/css">
+* {margin:0; padding:0;}
+a:link {color:black;}
+a:visited {color:gray;}
+a:hover {text-decoration:none;}
+a:active {color:navy;}
+img {border:0;}
+</style>
+
+<style type="text/css">
+		
+#nav {
+    width: 840px;
+	margin: auto;
+	padding: 0;
+	line-height: 100%;
+
+	background: #e0daca; /* for non-css3 browsers */
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcf5e5', endColorstr='#c0baaa'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#fcf5e5), to(#c0baaa)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #fcf5e5,  #c0baaa); /* for firefox 3.6+ */
+}
+#nav li {
+    width: 140px;
+	/* margin: auto; */
+	/* padding: 0 0 8px; */
+	float: left;
+	position: relative;
+	list-style: none;
+}
+/* main level link */
+#nav a {
+	/* font-weight: bold; */
+	font-style: italic;
+	text-align: center;
+	color: #6c2a1a;
+	text-decoration: none;
+	display: block;
+	padding:  9px 20px; /* height! up to tweaks*/
+	margin: 0;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+}
+/* main level link hover */
+#nav .current a, #nav li:hover > a {
+	background: #a98d78; /* for non-css3 browsers */
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8e5c5', endColorstr='#613b30'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#f8e5c5), to(#613b30)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #f8e5c5,  #613b30); /* for firefox 3.6+ */
+
+	color: white;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, .8);
+}
+/* sub levels link hover */
+#nav ul li:hover a, #nav li:hover li a {
+	background: none;
+	border: none;
+	filter:  none; /* for IE */
+	color: #6c2a1a;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+}
+#nav ul a:hover {
+	text-shadow: 0 1px 0 rgba(0, 0, 0, .8);
+	color: #fff !important;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+}
+/* level 2 list */
+#nav ul {
+	background: #a98d78; /* for non-css3 browsers */
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8e5c5', endColorstr='#613b30'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#f8e5c5), to(#613b30)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #f8e5c5,  #613b30); /* for firefox 3.6+ */	
+	
+	
+	display: none;
+	margin: 0;
+	padding: 0;
+	width: 138px;
+	position: absolute;
+	top: 34px;
+	left: 0;
+	border: solid 1px #b4b4b4;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+}
+/* dropdown */
+#nav li:hover > ul {
+	display: block;
+}
+#nav ul li {
+	float: none;
+	margin: 0;
+	padding: 0;
+}
+#nav ul a {
+	font-weight: normal;
+	text-shadow: none;
+}
+/* level 3+ list */
+#nav ul ul {
+	left: 181px;
+	top: -3px;
+}
+/* rounded corners for first and last child */
+#nav ul li:first-child > a {
+	-webkit-border-top-left-radius: 9px;
+	-moz-border-radius-topleft: 9px;
+	-webkit-border-top-right-radius: 9px;
+	-moz-border-radius-topright: 9px;
+}
+#nav ul li:last-child > a {
+	-webkit-border-bottom-left-radius: 9px;
+	-moz-border-radius-bottomleft: 9px;
+	-webkit-border-bottom-right-radius: 9px;
+	-moz-border-radius-bottomright: 9px;
+}
+/* clearfix */
+#nav:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+#nav {
+	display: inline-block;
+}
+html[xmlns] #nav {
+	display: block;
+}
+* html #nav {
+	height: 1%;
+}		
+		
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {display: inline-table;}
+/* backslash hack hides from IE mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* end backslash hack */		
+		
+</style>
+
+
+<style type="text/css">
+input[type="radio"] + span::before { 
+  content: ""; 
+  display: inline-block; 
+  width: 20px; height: 20px; 
+  background: url("/images/test/sprite.png") no-repeat -20px 0; 
+  vertical-align: middle; }
+
+input[type="radio"]:checked + span::before { 
+  background-position: -20px -20px; }
+
+input[type="radio"] { 
+  position: absolute; 
+  -moz-opacity: 0; 
+  -webkit-opacity: 0; 
+  opacity: 0; }
+
+input[type="radio"] { 
+  position: static\9; }
+
+input[type="radio"]:hover + span::before, input[type="radio"]:active + span::before { 
+  -moz-opacity: .7; 
+  -webkit-opacity: .7; 
+  opacity: .7; }
+
+.field input, .field select, .field textarea { 
+	padding: 2px 0;
+	margin: 2px 2px 2px 2px;
+	outline: 0;
+	font: normal 0.8em Verdana, Tahoma, sans-serif;
+	width: 130px;
+	background: #FFFFFF;
+	float:right;
+	border: solid 1px #888888;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#BBBBBB', endColorstr='#FFFFFF');
+	background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #BBBBBB), to(#FFFFFF));
+	background: -moz-linear-gradient(top, #FFFFFF, #BBBBBB 1px, #FFFFFF 20px);
+	}
+
+.field select {
+	width: 130px;
+	}       
+
+.field textarea { 
+	width: 400px;
+	max-width: 400px;
+	height: 150px;
+	line-height: 150%;
+	}
+
+.field label {
+        float: left;
+        }
+
+.field input:hover, .field textarea:hover, .field select:hover, 
+.field input:focus, .field textarea:focus, .field select:focus { 
+	border-color: #C9C9C9; 
+	}
+
+input[type="submit"] {
+	width: auto;
+	padding: 9px 15px;
+	background: #617798;
+	border: 0;
+	font-size: 14px;
+	color: #FFFFFF;
+	}
+
+</style>
+
+
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+<script type="text/javascript" src="/static/caroufredsel/jquery.carouFredSel-5.6.2.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+/*	CarouFredSel: an infinite, circular jQuery carousel.
+	Configuration created by the "Configuration Robot"
+	at caroufredsel.frebsite.nl
+*/
+$("#slider1").carouFredSel({
+	width: 840,
+	height: 100,
+	items: {
+		visible: 6,
+		width: 100,
+		height: 100
+	},
+
+	prev: "#prev_btn",
+	next: "#next_btn",
+	auto    : {
+        items           : 1,
+        duration        : 750,
+        easing          : "linear",
+        pauseDuration   : 0,
+        pauseOnHover    : "immediate"
+    }
+});
+});
+
+</script>
+ 
+<script language="javascript">
+function init() {
+document.getElementById('id_gender').setAttribute("type", "hidden");
+document.getElementById('id_gender').value = "women"
+document.jr_advanced_search.j_type.options.length = 1;
+document.jr_advanced_search.j_type.options[1]=new Option("Гарнитур", "suite", false, false);
+document.jr_advanced_search.j_type.options[2]=new Option("Цепочка", "chainlet", false, false);
+document.jr_advanced_search.j_type.options[3]=new Option("Браслет", "bracelet", false, false);
+document.jr_advanced_search.j_type.options[4]=new Option("Кольцо", "ring", false, false);
+document.jr_advanced_search.j_type.options[5]=new Option("Серьги", "earring", false, false);
+document.jr_advanced_search.j_type.options[6]=new Option("Колье", "necklace", false, false);
+document.jr_advanced_search.j_type.options[7]=new Option("Заколка", "barrette", false, false);
+}
+window.onload = init
+
+function setSearchOptions(idElement){
+	tot_tab = 3;
+	tab = document.getElementById('tab'+idElement);
+	search_option = document.getElementById('id_gender');
+	document.jr_advanced_search.j_type.options.length = 1;
+	for(i=1; i<=3; i++){
+		if(i==idElement){
+			tab.setAttribute("class","selected");
+			switch(i){
+				case(i=1): 
+				search_option.value="women";
+				document.jr_advanced_search.j_type.options[1]=new Option("Гарнитур", "suite", false, false);
+				document.jr_advanced_search.j_type.options[2]=new Option("Цепочка", "chainlet", false, false);
+				document.jr_advanced_search.j_type.options[3]=new Option("Браслет", "bracelet", false, false);
+				document.jr_advanced_search.j_type.options[4]=new Option("Кольцо", "ring", false, false);
+				document.jr_advanced_search.j_type.options[5]=new Option("Серьги", "earring", false, false);
+				document.jr_advanced_search.j_type.options[6]=new Option("Колье", "necklace", false, false);
+				document.jr_advanced_search.j_type.options[7]=new Option("Заколка", "barrette", false, false);
+				break
+				case(i=2): 
+				search_option.value="men";
+				document.jr_advanced_search.j_type.options[1]=new Option("Цепочка", "chainlet", false, false);
+				document.jr_advanced_search.j_type.options[2]=new Option("Браслет", "bracelet", false, false);
+				document.jr_advanced_search.j_type.options[3]=new Option("Кольцо", "ring", false, false);
+				document.jr_advanced_search.j_type.options[4]=new Option("Запонки", "cufflink", false, false);
+				document.jr_advanced_search.j_type.options[5]=new Option("Зажим для галстука", "tieclip", false, false);
+				break
+				case(i=3): 
+				search_option.value="children";
+				document.jr_advanced_search.j_type.options[1]=new Option("Цепочка", "chainlet", false, false);
+				document.jr_advanced_search.j_type.options[2]=new Option("Браслет", "bracelet", false, false);
+				document.jr_advanced_search.j_type.options[3]=new Option("Кольцо", "ring", false, false);
+				document.jr_advanced_search.j_type.options[4]=new Option("Заколка", "barrette", false, false);
+				break
+			}
+
+
+		} else {
+			document.getElementById('tab'+i).setAttribute("class","");
+		}
+
+	}
+}
+</script>
+
+</head>
+
+
+<body> 
+
+	<div id="jr_main_wrapper" style="width:840px; margin-left:auto; margin-right:auto;">
+		<div id="jr_header" style="">
+		    <div id="jr_header_inner" style="overflow:hidden; background-color: #f7f8fa;">
+			    <a href="/" class="link_img" style="float:left"><img src="/images/test/top-left.jpg"></a>
+			    <div style="float: right">
+					<p style="text-align: right; font-style: italic;">Есть вопросы? Звоните сейчас!</p>
+					<p style="text-align: right; color: #835835;">+7 495 <em>5555555</em></p>
+					<p style="text-align: right; font-size:3em; font-weight:bold;">Silver Boutique</p>
+					<p style="text-align: right; font-family:sans-serif; font-weight:bold;">серебряные украшения с полудрагоценными камнями</p>
+				</div>
+			</div>
+		</div>
+		<div id="jr_topnav" style="">
+		    <div id="jr_topnav_inner" style="">
+				<ul id="nav">
+					<li><a href="/women/">Женщинам</a>
+						<ul>
+							<li><a href="/catalogue/search/?j_type=suite&gem=all&price_min=&price_max=&gender=women">Гарнитуры</a></li>
+							<li><a href="/catalogue/search/?j_type=chainlet&gem=all&price_min=&price_max=&gender=women">Цепочки</a></li>
+							<li><a href="/catalogue/search/?j_type=ring&gem=all&price_min=&price_max=&gender=women">Кольца</a></li>
+						</ul>
+					</li>
+					<li><a href="#">Мужчинам</a>
+						<ul>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+						</ul>
+					</li>
+					<li><a href="#">Детям</a>
+						<ul>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+						</ul>
+					</li>
+					<li><a href="#">Сувениры</a>
+						<ul>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+						</ul>
+					</li>
+					<li><a href="#">Упаковка</a>
+						<ul>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+						</ul>
+					</li>
+					<li><a href="#">Доп. услуги</a>
+						<ul>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+						</ul>
+					</li>
+				</ul>
+				
+			</div>
+		</div>
+		<div id="jr_left" style="width:25%; clear:both; float:left;">
+		    <div id="jr_left_inner" style="overflow:hidden;">
+			    <div id="jr_left_inner_search" class="clearfix" style="background:#f0f0f0; border:1px solid #dfdfdf;">
+<form class="clearfix" id="search-options" name="search-options" action="/catalogue/search/" method="get">
+  <div id="tab1" class="clearfix selected" onclick="javascript:setSearchOptions(1);">
+   <label style="margin-left:0.5em; float:left; clear:both;"> 
+    <input checked="checked" id="rad1" name="radioset" type="radio" value = "Choice_1" style="float:left;" />
+    <span>Женщинам</span>
+   </label>
+  </div>
+  <div id="tab2" class="clearfix" onclick="javascript:setSearchOptions(2);">
+   <label style="margin-left:0.5em; float:left; clear:both;">
+    <input id="rad2" name="radioset" type="radio" value="Choice_2" style="float:left;"/>
+    <span>Мужчинам</span>
+   </label>
+  </div>
+  <div id="tab3" class="clearfix" onclick="javascript:setSearchOptions(3);">
+   <label style="margin-left:0.5em; float:left; clear:both;">
+    <input id="rad3" name="radioset" type="radio" value="Choice_3" style="float:left;"/>
+    <span>Детям</span>
+   </label>
+  </div>
+
+</form>
+
+			        <form id="jr_advanced_search" name="jr_advanced_search" action="/catalogue/search/" method="get">
+			                <div class="field clearfix">
+			                    <label for="id_j_type">Тип:</label>
+			                    {{ s_form.j_type }}
+			                </div>
+			                <div class="field clearfix">
+			                    <label for="id_gem">Вставка:</label>
+			                    {{ s_form.gem }}
+			                </div>
+			                <div class="field clearfix">
+			                    <label for="id_price_min">Цена от</label> {{ s_form.price_min }}
+			                </div>
+			                <div class="field clearfix">
+			                    <label for="id_price_max">до</label> {{ s_form.price_max }}
+			                </div>
+
+			                {{s_form.gender}}
+
+			                <input type="submit" value="Найти">    
+
+			        </form>
+
+					
+
+
+			    </div>
+				<div id="jr_left_inner_links">
+				<ul style="list-style-type: none;">
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">О магазине Silver Boutique</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Поставщики</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Как оформить заказ</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Доставка и оплата</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Партнёрам</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Контакты</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Личный кабинет</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Корзина</a></li>
+					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Главная</a></li>					
+				</ul>
+				</div>
+			</div>
+		</div>
+		<div id="jr_content" style="width:53%; float:left;">
+			<div id="jr_content_inner" style="overflow:hidden;">
+			{% block content_area %}
+			<p>content</p>
+			{% endblock %}
+			</div>
+		</div>
+		<div id="jr_right" style="width:22%; float:left;">
+		    <div id="jr_right_inner" style="overflow:hidden; text-align: right;">
+			    
+				<div id="jr_cart" style="margin: 0 0 1.25em 0;">
+				<div class="clearfix">
+				<p style="float:right; font-size:1.2em; border-bottom:1px dashed; color: #703233;">Корзина{% load jr_cart %}{% cart_summary request %}</p>
+				<img src="/images/test/cart.jpg" style="float:right;">
+				</div>
+				<div class="clearfix">{% load jr_cart %}{% cart_list request %}</div>
+				<a href="#">Перейти в корзину</a>
+				</div>
+				
+				<div id="jr_right_info">
+				<p style="float:right; font-size:1.3em; color: #703233;">Новости сайта</p>
+				<img src="/images/test/list_marker.jpg" style="float:right; margin: 0.25em 0.2em 0 0;">
+				<p style="clear:right;">тратата, тратата, мы везём с собой котэ</p>
+				<p style="float:right; font-size:1.3em; color: #703233;">Акции</p>
+				<img src="/images/test/list_marker.jpg" style="float:right; margin: 0.25em 0.2em 0 0;">
+				<p style="clear:right;">мы везём с собой котэ, трататэ эх трататэ</p>
+				
+				</div>
+
+		    </div>
+		</div>
+		<div id="jr_carousel" style="clear:both;">
+		    <div id="jr_carousel_inner" style="overflow:hidden; border-top:1px dashed; border-bottom:1px dashed;">
+				<div id="slider1">
+				<a href=""><img src="/images/test/1.png"></a>
+				<a href=""><img src="/images/test/2.png"></a>
+				<a href=""><img src="/images/test/3.png"></a>
+				<a href=""><img src="/images/test/4.png"></a>
+				<a href=""><img src="/images/test/5.png"></a>
+				<a href=""><img src="/images/test/6.png"></a>
+				<a href=""><img src="/images/articles/IMG_2958_thumb.jpg"></a>
+				<a href=""><img src="/images/articles/IMG_2947_thumb.jpg"></a>
+				<a href=""><img src="/images/test/7.png"></a>
+				<a href=""><img src="/images/test/8.png"></a>
+				<a href=""><img src="/images/test/9.png"></a>
+				<a href=""><img src="/images/test/10.png"></a>
+				</div>
+			</div>
+		</div>
+		<div id="jr_articles" style="clear:both;">
+		    <div id="jr_articles_inner" style="overflow:hidden;">
+			<p>Web syndication is a form of syndication in which website material is made available to multiple other sites. Most commonly, web syndication refers to making web feeds available from a site in order to provide other people with a summary or update of the website's recently added content (for example, the latest news or forum posts). The term can also be used to describe other kinds of licensing website content so that other websites can use it.
+			<p>Contents  [hide]
+			<p>1 Motivation
+			<p>2 History
+			<p>3 Web syndication as a commercial model
+			<p>4 Web syndication and e-commerce
+			<p>5 See also
+			<p>6 References
+			</div>
+		</div>		
+		<div id="jr_footer" style="">
+		    <div id="jr_footer_inner" class="clearfix" style="overflow:hidden; background:#674138; border-top:5px dotted; margin:5px 0 0 0;">
+			   <div style="float:left; color:white;"><p style="font-size:1.8em; letter-spacing:0.2em; font-weight:bold;">Silver Boutique</p><p style="font-family:sans-serif; font-weight:bold; font-size:0.6em; letter-spacing:-0.05em;">серебряные украшения с полудрагоценными камнями</p></div>
+			   <div style="float:left; font-size:0.8em;"><p>ftr, ipsum, lorem, oniorem</p></div>
+		    </div>
+		</div>
+	</div>
+
+	
+</body>		

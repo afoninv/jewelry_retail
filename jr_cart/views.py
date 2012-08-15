@@ -23,7 +23,10 @@ def cart_add_suite(request, form, item):
     for article in form.cleaned_data['suite_contents']:
         suite_price += article.price
         if article.gem_summary(): suite_gems.append(article.gem_summary())
-    suite_price = int(suite_price * (100.0 + item.get_factor()) / 100)
+
+    # Discount for suites. It works, but we decided not to implement it yet.
+    # suite_price = int(suite_price * (100.0 + item.get_factor()) / 100)
+
     suite = OrderItem(item_id=item.id, name=item.name, j_type=item.j_type(), quantity=1, price=suite_price, gender=item.gender, metal=item.metal, gems=u';'.join(suite_gems), supplier=item.supplier, site_description=item.site_description)
     suite.number = cart_count + 1
     cart.append(suite)

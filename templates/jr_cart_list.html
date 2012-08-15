@@ -1,6 +1,9 @@
 ﻿{% for item in cart_list%}
-<img src="{{item.thumbnail}}"> {{item.name}} ({{item.j_type}})
-<br>
+<div class="thumb_and_tooltip_container">
+<div><a href="{{item.get_absolute_url}}"><img src="{{item.thumbnail}}"></a>
+</div>
+<p>{{item.name}} ({{item.j_type}})</p>
+</div>
 {% empty %}
-Корзина пуста
+<p>Корзина пуста</p>
 {% endfor%}
