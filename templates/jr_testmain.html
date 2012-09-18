@@ -5,19 +5,41 @@
 
 <title>Silver Boutique</title>
 
+<link rel="shortcut icon" href="/images/special/favicon.ico" type="image/x-icon" /> 
+<link rel="icon" href="/images/special/favicon.gif" type="image/gif" /> 
+
 <style type="text/css">
 * {margin:0; padding:0;}
+html { background: url('/images/test/background_pattern.png') repeat-y center;}
+body {
+	background: url('/images/test/background_face_light.png') no-repeat center top;
+	width: 100%;
+}
 a:link {color:black;}
 a:visited {color:gray;}
 a:hover {text-decoration:none;}
 a:active {color:navy;}
-img {border:0;}
+img {border:0;} /*remove blue border from images with links */
+
+.thumb_and_tooltip_container {position: relative; float:right;}
+.thumb_and_tooltip_container:hover .tooltip, .tooltip:hover {display:block;}
+.tooltip {
+	display:none; 
+	position: absolute; 
+	left: -20px; 
+	top: 60px; 
+	width: 100px; 
+	text-align: left; 
+	border:1px solid gray; 
+	padding:.3em; 
+	background-color:#FFD;
+}
 </style>
 
 <style type="text/css">
 		
 #nav {
-    width: 840px;
+	width: 840px;
 	margin: auto;
 	padding: 0;
 	line-height: 100%;
@@ -43,7 +65,7 @@ img {border:0;}
 	color: #6c2a1a;
 	text-decoration: none;
 	display: block;
-	padding:  9px 20px; /* height! up to tweaks*/
+	padding: 9px 20px; /* height! up to tweaks*/
 	margin: 0;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
 }
@@ -75,9 +97,9 @@ img {border:0;}
 /* level 2 list */
 #nav ul {
 	background: #a98d78; /* for non-css3 browsers */
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8e5c5', endColorstr='#613b30'); /* for IE */
-	background: -webkit-gradient(linear, left top, left bottom, from(#f8e5c5), to(#613b30)); /* for webkit browsers */
-	background: -moz-linear-gradient(top,  #f8e5c5,  #613b30); /* for firefox 3.6+ */	
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8e5c5', endColorstr='#785547'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#f8e5c5), to(#785547)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #f8e5c5,  #785547); /* for firefox 3.6+ */	
 	
 	
 	display: none;
@@ -85,6 +107,7 @@ img {border:0;}
 	padding: 0;
 	width: 138px;
 	position: absolute;
+	z-index:1; /*resolving conflict with thumb tooltips*/
 	top: 34px;
 	left: 0;
 	border: solid 1px #b4b4b4;
@@ -166,15 +189,17 @@ html[xmlns] #nav {
 input[type="radio"] + span::before { 
   content: ""; 
   display: inline-block; 
-  width: 20px; height: 20px; 
-  background: url("/images/test/sprite.png") no-repeat -20px 0; 
+  width: 20px; height: 20px;
+  padding: 0 5px 0 0;
+  margin: 0 0 4px 0;
+  background: url("/images/test/checkbox.png") no-repeat 0 0; 
   vertical-align: middle; }
 
 input[type="radio"]:checked + span::before { 
-  background-position: -20px -20px; }
+  background-position: 0 -20px; }
 
 input[type="radio"] { 
-  position: absolute; 
+  position: absolute;
   -moz-opacity: 0; 
   -webkit-opacity: 0; 
   opacity: 0; }
@@ -189,10 +214,11 @@ input[type="radio"]:hover + span::before, input[type="radio"]:active + span::bef
 
 .field input, .field select, .field textarea { 
 	padding: 2px 0;
-	margin: 2px 2px 2px 2px;
+	margin: 2px 2px 1px 2px;
 	outline: 0;
-	font: normal 0.8em Verdana, Tahoma, sans-serif;
-	width: 130px;
+	font: normal 0.8em 'Myriad Pro', Myriad, Arial, sans-serif;
+	font-weight: bold;
+	width: 90px;
 	background: #FFFFFF;
 	float:right;
 	border: solid 1px #888888;
@@ -202,10 +228,12 @@ input[type="radio"]:hover + span::before, input[type="radio"]:active + span::bef
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#BBBBBB', endColorstr='#FFFFFF');
 	background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #BBBBBB), to(#FFFFFF));
 	background: -moz-linear-gradient(top, #FFFFFF, #BBBBBB 1px, #FFFFFF 20px);
+	text-align: right;
 	}
 
 .field select {
-	width: 130px;
+	width: 92px;
+	padding: 0;
 	}       
 
 .field textarea { 
@@ -215,23 +243,86 @@ input[type="radio"]:hover + span::before, input[type="radio"]:active + span::bef
 	line-height: 150%;
 	}
 
+label {
+        font-size: 0.9em;
+        font-family: 'Myriad Pro', Myriad, Arial, sans-serif;
+        color: #060606;
+        }
+
 .field label {
+        padding: 0.2em 0 0 0;
         float: left;
         }
+
+#search-options * span {
+        color: #56291c;
+        font-size: 1em;
+        }
+
+#jr_advanced_search {margin: 5px 0;}
 
 .field input:hover, .field textarea:hover, .field select:hover, 
 .field input:focus, .field textarea:focus, .field select:focus { 
 	border-color: #C9C9C9; 
 	}
 
-input[type="submit"] {
-	width: auto;
-	padding: 9px 15px;
-	background: #617798;
-	border: 0;
-	font-size: 14px;
-	color: #FFFFFF;
-	}
+.search_button {
+	float: right;
+	margin: 7px 0 0;
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fff8ea), color-stop(1, #beb8a7) );
+	background:-moz-linear-gradient( center top, #fff8ea 5%, #beb8a7 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff8ea', endColorstr='#beb8a7');
+	background-color:#fff8ea;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;	
+	border:1px solid #d0bfbc;
+	display:inline-block;
+	color:#666666;
+	font-family:Georgia, 'Times New Roman', serif;
+	font-size:0.9em;
+	font-weight:bold;
+	padding:7px 15px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #ffffff;
+}
+.search_button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #beb8a7), color-stop(1, #fff8ea) );
+	background:-moz-linear-gradient( center top, #beb8a7 5%, #fff8ea 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#beb8a7', endColorstr='#fff8ea');
+	background-color:#beb8a7;
+}
+.search_button:active {
+	position:relative;
+	top:1px;
+}
+/* This imageless css button was generated by CSSButtonGenerator.com */
+
+#jr_left_inner_links ul {
+	list-style-type: none;
+}
+#jr_left_inner_links ul li {
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: 0.8em;
+	background-image: url('/images/test/list_marker.jpg'); 
+	background-repeat: no-repeat; 
+	background-position: 0 0.4em;
+	margin: 5px 0 0 0;
+	padding: 0.3em 0 0 1.4em;
+
+}
+
+.news_article {margin: 2em 0;}
+.news_article img {float:right; margin: 0.25em 0.2em 0 0;}
+.news_article p:first-child {
+	float:right; 
+	font-family: Georgia, 'Times New Roman', serif; 
+	font-size:1.2em; 
+	color: #510101;
+}
+.news_article img + p {clear:right; font-family: 'Myriad Pro', Myriad, Arial, sans-serif; font-size:0.8em;}
 
 </style>
 
@@ -336,13 +427,13 @@ function setSearchOptions(idElement){
 
 	<div id="jr_main_wrapper" style="width:840px; margin-left:auto; margin-right:auto;">
 		<div id="jr_header" style="">
-		    <div id="jr_header_inner" style="overflow:hidden; background-color: #f7f8fa;">
-			    <a href="/" class="link_img" style="float:left"><img src="/images/test/top-left.jpg"></a>
-			    <div style="float: right">
-					<p style="text-align: right; font-style: italic;">Есть вопросы? Звоните сейчас!</p>
-					<p style="text-align: right; color: #835835;">+7 495 <em>5555555</em></p>
-					<p style="text-align: right; font-size:3em; font-weight:bold;">Silver Boutique</p>
-					<p style="text-align: right; font-family:sans-serif; font-weight:bold;">серебряные украшения с полудрагоценными камнями</p>
+		    <div id="jr_header_inner" style="background-color: #f7f8fa;">
+			    <a href="/" class="link_img" style="float:left"><img src="/images/test/top-left.png" style="position:relative; left:-60px;"></a>
+				<div style="float: right; text-align: right;">
+					<p style="margin: 30px 0 0; font-size: 0.9em; font-style: italic; font-family: Georgia, 'Times New Roman', serif;">Есть вопросы? Звоните сейчас!</p>
+					<p style="margin: 7px 0 15px; font-size: 1.15em; font-family: Georgia, 'Times New Roman', serif; font-style: italic; color: #845935;">+7 (495) <em style="font-weight:bold;">123-45-67</em></p>
+					<img src="/images/test/name.png">
+					<p style="font-size: 1.05em; font-family: 'Myriad Pro', Myriad, Arial, sans-serif; color: #3b0000;">серебряные украшения с полудрагоценными камнями</p>
 				</div>
 			</div>
 		</div>
@@ -402,22 +493,24 @@ function setSearchOptions(idElement){
 		</div>
 		<div id="jr_left" style="width:25%; clear:both; float:left;">
 		    <div id="jr_left_inner" style="overflow:hidden;">
-			    <div id="jr_left_inner_search" class="clearfix" style="background:#f0f0f0; border:1px solid #dfdfdf;">
+			    <div id="jr_left_inner_search" class="clearfix" style="height: 270px; background: url('/images/test/search_background.png') no-repeat; padding: 10px 40px 0 15px;">
+				<img src="/images/test/search_name.png">
+
 <form class="clearfix" id="search-options" name="search-options" action="/catalogue/search/" method="get">
   <div id="tab1" class="clearfix selected" onclick="javascript:setSearchOptions(1);">
-   <label style="margin-left:0.5em; float:left; clear:both;"> 
+   <label style="float:left; clear:both;"> 
     <input checked="checked" id="rad1" name="radioset" type="radio" value = "Choice_1" style="float:left;" />
     <span>Женщинам</span>
    </label>
   </div>
   <div id="tab2" class="clearfix" onclick="javascript:setSearchOptions(2);">
-   <label style="margin-left:0.5em; float:left; clear:both;">
+   <label style="float:left; clear:both;">
     <input id="rad2" name="radioset" type="radio" value="Choice_2" style="float:left;"/>
     <span>Мужчинам</span>
    </label>
   </div>
   <div id="tab3" class="clearfix" onclick="javascript:setSearchOptions(3);">
-   <label style="margin-left:0.5em; float:left; clear:both;">
+   <label style="float:left; clear:both;">
     <input id="rad3" name="radioset" type="radio" value="Choice_3" style="float:left;"/>
     <span>Детям</span>
    </label>
@@ -426,24 +519,26 @@ function setSearchOptions(idElement){
 </form>
 
 			        <form id="jr_advanced_search" name="jr_advanced_search" action="/catalogue/search/" method="get">
-			                <div class="field clearfix">
+			                <div class="field clearfix offset_field">
 			                    <label for="id_j_type">Тип:</label>
 			                    {{ s_form.j_type }}
 			                </div>
-			                <div class="field clearfix">
+			                <div class="field clearfix offset_field">
 			                    <label for="id_gem">Вставка:</label>
 			                    {{ s_form.gem }}
 			                </div>
-			                <div class="field clearfix">
+			                <div class="field clearfix offset_field">
 			                    <label for="id_price_min">Цена от</label> {{ s_form.price_min }}
 			                </div>
-			                <div class="field clearfix">
+			                <div class="field clearfix offset_field">
 			                    <label for="id_price_max">до</label> {{ s_form.price_max }}
 			                </div>
 
+			                <div style="display:none;">
 			                {{s_form.gender}}
+			                </div>
 
-			                <input type="submit" value="Найти">    
+			                <input type="submit" class="search_button" value="Найти">    
 
 			        </form>
 
@@ -452,16 +547,16 @@ function setSearchOptions(idElement){
 
 			    </div>
 				<div id="jr_left_inner_links">
-				<ul style="list-style-type: none;">
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">О магазине Silver Boutique</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Поставщики</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Как оформить заказ</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Доставка и оплата</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Партнёрам</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Контакты</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Личный кабинет</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Корзина</a></li>
-					<li style="background-image: url('/images/test/list_marker.jpg'); background-repeat: no-repeat; background-position: 0 0.5em; padding: 0.3em 0 0 1em;"><a href="#">Главная</a></li>					
+				<ul>
+					<li><a href="#">О магазине Silver Boutique</a></li>
+					<li><a href="#">Поставщики</a></li>
+					<li><a href="#">Как оформить заказ</a></li>
+					<li><a href="#">Доставка и оплата</a></li>
+					<li><a href="#">Партнёрам</a></li>
+					<li><a href="#">Контакты</a></li>
+					<li><a href="#">Личный кабинет</a></li>
+					<li><a href="#">Корзина</a></li>
+					<li><a href="#">Главная</a></li>					
 				</ul>
 				</div>
 			</div>
@@ -476,23 +571,26 @@ function setSearchOptions(idElement){
 		<div id="jr_right" style="width:22%; float:left;">
 		    <div id="jr_right_inner" style="overflow:hidden; text-align: right;">
 			    
-				<div id="jr_cart" style="margin: 0 0 1.25em 0;">
+				<div id="jr_cart" style="margin: 1em 0 1.25em 0;">
 				<div class="clearfix">
-				<p style="float:right; font-size:1.2em; border-bottom:1px dashed; color: #703233;">Корзина{% load jr_cart %}{% cart_summary request %}</p>
-				<img src="/images/test/cart.jpg" style="float:right;">
+				<p style="float:right; font-family: Georgia, 'Times New Roman', serif; font-size:1.2em; border-bottom:1px dashed; color: #3e0000;">Корзина{% load jr_cart %}{% cart_summary request %}</p>
+				<img src="/images/test/cart.png" style="position:relative; top:-2px; left:-3px; float:right;">
 				</div>
 				<div class="clearfix">{% load jr_cart %}{% cart_list request %}</div>
-				<a href="#">Перейти в корзину</a>
+				<a href="#" style="float:right; font-family: Georgia, 'Times New Roman', serif; font-size:0.8em; color: #3e0000;">Перейти в корзину</a>
 				</div>
 				
 				<div id="jr_right_info">
-				<p style="float:right; font-size:1.3em; color: #703233;">Новости сайта</p>
-				<img src="/images/test/list_marker.jpg" style="float:right; margin: 0.25em 0.2em 0 0;">
-				<p style="clear:right;">тратата, тратата, мы везём с собой котэ</p>
-				<p style="float:right; font-size:1.3em; color: #703233;">Акции</p>
-				<img src="/images/test/list_marker.jpg" style="float:right; margin: 0.25em 0.2em 0 0;">
-				<p style="clear:right;">мы везём с собой котэ, трататэ эх трататэ</p>
-				
+				<div class="news_article">
+				<p>Новости сайта</p>
+				<img src="/images/test/list_marker.jpg">
+				<p>По словам Валерия Голенко, в ходе встречи было заявлено: «Росводоканал» не планирует отказываться от реализации...</p>
+				</div>
+				<div class="news_article">
+				<p>Акции</p>
+				<img src="/images/test/list_marker.jpg">
+				<p>Новогодние скидки! Мы рады предложить Вам последние новинки со скидкой до 40% - узнайте больше о специальном предложении здесь...</p>
+				</div>				
 				</div>
 
 		    </div>
@@ -527,13 +625,13 @@ function setSearchOptions(idElement){
 			<p>6 References
 			</div>
 		</div>		
-		<div id="jr_footer" style="">
-		    <div id="jr_footer_inner" class="clearfix" style="overflow:hidden; background:#674138; border-top:5px dotted; margin:5px 0 0 0;">
-			   <div style="float:left; color:white;"><p style="font-size:1.8em; letter-spacing:0.2em; font-weight:bold;">Silver Boutique</p><p style="font-family:sans-serif; font-weight:bold; font-size:0.6em; letter-spacing:-0.05em;">серебряные украшения с полудрагоценными камнями</p></div>
-			   <div style="float:left; font-size:0.8em;"><p>ftr, ipsum, lorem, oniorem</p></div>
-		    </div>
-		</div>
 	</div>
 
+	<div id="jr_footer" style="background: #674137;">
+	    <div id="jr_footer_inner" class="clearfix" style="width:840px; margin: 0 auto; padding: 35px 0 0; overflow:hidden; background: url('/images/test/footer.png') no-repeat center top;">
+		<img src="/images/test/name_small.png" style="float:left; margin: 0 30px 50px 0; ">
+		<div style="font-family: Arial, sans-serif; font-size:0.6em;"><p>Обращаем ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 (2) Гражданского кодекса Российской Федерации. Для получения подробной информации о наличии и стоимости указанных товаров и (или) услуг, пожалуйста, обращайтесь к менеджерам отдела клиентского обслуживания с помощью специальной формы связи или по телефону.</p></div>
+	    </div>
+	</div>
 	
-</body>		
+</body>			

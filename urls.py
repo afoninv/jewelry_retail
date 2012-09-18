@@ -20,8 +20,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     #there go main stuff
-    ('^$', mainpage),
-    #('^$', empty),
+    #('^$', mainpage),
+    ('^$', empty),
     ('^empty/$', empty),
     ('^catalogue/$', catalogue),
     ('^catalogue/search/$', catalogue_search),

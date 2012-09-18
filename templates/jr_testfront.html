@@ -1,16 +1,18 @@
-﻿﻿{% extends "jr_testmain.html" %}
-
+{% extends "jr_testmain.html" %}
 {% block content_area %}
 
     {% if results.object_list %}
 
         <div class="clearfix">
         {% for item in results.object_list %}
-            <div style="float:left; width:101px; padding: 15px 5px 0; height:166px; border-bottom:1px dashed; text-align: center; overflow:hidden;">
-                <a href="{{item.get_absolute_url}}"><img src="{{ item.thumbnail }}"></a>
-                    <p style="font-size:0.85em; font-weight:bold;"><span style="font-size:0.7em;">{{ item.j_type }} </span>"{{ item.name }}"</p>
-                    <p style="font-size:1.1em; font-style:italic;">{{ item.price }} р.</p>
-            </div>
+                <a href="{{item.get_absolute_url}}" style="">
+                    <div style="float:left; width:101px; padding: 15px 5px 0 5px; height:166px; border-bottom:1px dashed; text-align: center; overflow:hidden;">
+                        <img src="{{ item.thumbnail }}">
+                        <p style="color: #240000; font-family: Georgia, 'Times New Roman', serif; font-size:0.6em;">{{ item.j_type }}</p>
+                        <p style="color: #240000; font-family: Georgia, 'Times New Roman', serif; font-size:0.75em;">"{{ item.name }}"</p>
+                        <p style="color: #240000; font-family: Georgia, 'Times New Roman', serif; font-size:1.1em; font-style:italic;">{{ item.price }} <span style="font-size:0.8em;">р.</span></p>
+                    </div>
+                </a>
         {% endfor %}
         </div>
 
@@ -34,5 +36,5 @@
         <p> No search results! </p>
 
     {% endif %}
-
+	
 {% endblock %}
