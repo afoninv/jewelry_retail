@@ -1,44 +1,59 @@
-﻿{% extends "jr_catalogue.html" %}
+{% extends "jr_testmain.html" %}
 
-{% block more_style %} 
-        .view_item{
-            float: left;
-            border-style:solid; border-width:thin; border-color:#666;
-            padding:10px; margin: 10px;}
+{% block content_area %}
+<div>
 
-        .view_item a:link, .view_item a:visited{
-            text-decoration: none;
-            color:white; }
-
-        .view_item a:hover{
-            color:red; } 
-
-         .photo{
-            color:white; 
-            background-color: red; 
-            padding: 25px 25px 25px 25px;
-            text-align: center;
-            text-decoration: none;}
-
-{% endblock %}
-
-{% block catalogue_view %}<div class="catalogue_view">
-
-<!-- Here deprecated stuff
-
-<p>
-<div style="float:left">{% if item.image_three %}<img src="{{ item.image_three.url }}">{% else %}<img src="/images/special/placeholder3.jpg">{% endif %}</div>
-<p> <img src="{{ item.thumbnail }}">
-<p>{% if item.image_two %}<img src="{{ item.image_two.url }}">{% else %}<img src="/images/special/placeholder2.jpg">{% endif %} 
-
-End deprecated stuff -->
-
-<!-- Here Galleriffic try  (more below) -->
+<!-- Here Galleriffic (more below) -->
 
 		<div id="page">
 			<div id="container">
 
 				<!-- Start Advanced Gallery Html Containers -->
+				<div id="thumbs" class="navigation">
+					<ul class="thumbs noscript">
+						<li>
+						{% if item.image_one_thumb %}
+							<a class="thumb" name="First thumbnail" href="{{ item.image_one.url }}" title="First thumbnail">
+								<img src="{{ item.image_one_thumb.url }}" alt="First photo" />
+							</a>							
+						{% else %}
+							<a class="thumb" name="First thumbnail" href="/images/special/placeholder3.jpg" title="First thumbnail">
+								<img src="/images/special/placeholder1.jpg" alt="First photo" />
+							</a>
+						{% endif %}
+							<div class="caption">
+								<div class="image-title"></div>
+								<div class="image-desc"></div>
+							</div>
+						</li>
+
+						{% if item.image_two_thumb %}
+						<li>
+							<a class="thumb" name="Second thumbnail" href="{{ item.image_two.url }}" title="Second thumbnail">
+								<img src="{{ item.image_two_thumb.url }}" alt="Second photo" />
+							</a>
+							<div class="caption">
+								<div class="image-title"></div>
+								<div class="image-desc"></div>
+							</div>
+						</li>
+						{% endif %}
+
+						{% if item.image_three_thumb %}
+						<li>
+							<a class="thumb" name="Third thumbnail" href="{{ item.image_three.url }}" title="Third thumbnail">
+								<img src="{{ item.image_three_thumb.url }}" alt="Third photo" />
+							</a>
+							<div class="caption">
+								<div class="image-title"></div>
+								<div class="image-desc"></div>
+							</div>
+						</li>
+						{% endif %}
+
+					</ul>
+				</div>
+
 				<div id="gallery" class="content">
 					<div id="controls" class="controls"></div>
 					<div class="slideshow-container">
@@ -47,74 +62,58 @@ End deprecated stuff -->
 					</div>
 					<div id="caption" class="caption-container"></div>
 				</div>
-				<div id="thumbs" class="navigation">
-					<ul class="thumbs noscript">
-						<li>
-							<a class="thumb" name="first 111" href="/images/articles/IMG_2958.jpg" title="First 111">
-								<img src="/images/articles/IMG_2958_thumb.jpg" alt="First 111" />
-							</a>
-							<div class="caption">
-								<div class="image-title">First 111</div>
-								<div class="image-desc">Description of first 111</div>
-							</div>
-						</li>
-
-						<li>
-							<a class="thumb" name="second 111" href="/images/articles/IMG_2947.jpg" title="Second 111">
-								<img src="/images/articles/IMG_2947_thumb.jpg" alt="Second 111" />
-							</a>
-							<div class="caption">
-								Something second 111
-							</div>
-						</li>
-					</ul>
-				</div>
 				<div style="clear: both;"></div>
 			</div>
 		</div>
 
-<!-- End Galleriffic try (more below) -->
+<!-- End Galleriffic (more below) -->
 
+<p style="margin: 0 0 25px; font-size: 1.4em; font-family: Georgia, 'Times New Roman', serif; color: #4c0707; text-align:center;"><span style="font-size:0.75em;">{{ item.j_type }} </span>{{ item.name }}</p>
 
-<p style="text-align:center"> <strong>{{ item.name }}</strong>
-<p> {{ item.j_type }} 
-        ({{ item.metal }}, 
-        {{ item.gem_summary }})
-<p>Металл: {{ item.metal }}, вставка: {{ item.gem_summary }}
-<p>Цена: {{ item.price }}
-<br>
+<div class="clearfix">
+<div class="item_desc">
+    <div>
+    <p>Металл: <span>{{ item.metal }}</span> 
+    {% if item.gem_summary %}<p>Вставка: <span>{{ item.gem_summary }}</span>{% endif %}
+    <p>Цена: <span>{{ item.price }} р.</span>
+    </div>
+
     <form id="jr_id" name="jr_id" action="" method="post">{% csrf_token %}
         {% if item.j_type_eng = 'ring' %}
-        <div class="field">
+        <div class="field ring_size">
             {{ form.size.errors }}
             <label for="id_size">Размер:</label>
             {{ form.size }}
         </div>
         {% endif %}
 
-        <input type="submit" value="Добавить в корзину">    
+        <input type="submit" value="Добавить в корзину" id="to_cart_button" class="css_button">    
     </form>
-<br>
-<br>
-<p>{{ item.site_description }}
-<br>
-<br>
-<br>
-<hr>
+</div>
+<div style="text-indent: 1.5em; padding: 0 0 15px; border-bottom: 1px dashed #000;">
+<p>{{ item.site_description }} ipsum lorem repeated several times creates a larger text field which is quite suitable for the purposes of testing web page layouts. 
+<p> But wait! There is still more to that than appears to the eye. We are not finished yet.
+<p> You thought we are?
+<p> No way. In fact, we need more longer sentences to get the feeling of what this layout could look like in a realistic environment.
+</div>
+</div>
 
-<p>Закажите по телефону сейчас +7 905 5555555 или добавьте в корзину.
-<br>
-<br>
-<br>
-<hr>
+<div style="padding: 15px 0;">
+<p>Закажите по телефону сейчас <span style="font-weight:bold;">+7 905 5555555</span> или добавьте в корзину.
+</div>
 
     {% if results %}
-    <div class="other_suite_items">
-        <p>В комплекте с этим изделием:
+    <div style="border-top: 1px dashed #000; padding: 15px 0 0;">
+        <p>В комплекте с этим изделием:</p>
             {% for item in results %}
-                <div class="view_item">
-                    <a href="{{item.get_absolute_url}}"><div class="photo"><img src="{{ item.thumbnail }}"></div></a><div style="text-align: center">{{ item.j_type}} "{{ item.name }}"<br> ({{ item.price }} р.)</div>
-                </div>
+                <a href="{{item.get_absolute_url}}">
+                    <div style="float:left; width:101px; padding: 15px 5px 0 5px; height:166px; text-align: center; overflow:hidden;">
+                        <img src="{{ item.thumbnail }}">
+                        <p style="color: #240000; font-family:Georgia, 'Times New Roman', serif; font-size:0.6em;">{{ item.j_type }}</p>
+                        <p style="color: #240000; font-family:Georgia, 'Times New Roman', serif; font-size:0.75em;">"{{ item.name }}"</p>
+                        <p style="color: #240000; font-family:Georgia, 'Times New Roman', serif; font-size:1.1em; font-style:italic;">{{ item.price }} <span style="font-size:0.8em;">р.</span></p>
+                    </div>
+                </a>
             {% endfor %}
     </div>
 

@@ -14,7 +14,6 @@ def gallerytest(request):
     return render_to_response("gallerytest.html", context_instance=RequestContext(request))
 
 def testmain(request):
-
     search_results = Article.objects.order_by('-on_sale')[0:10]
     search_pages = Paginator(search_results, 10)
     page = request.GET.get('page', 1)
@@ -29,8 +28,8 @@ def testmain(request):
 
 def testfront(request):
 
-    search_results = Article.objects.order_by('-on_sale')[0:10]
-    search_pages = Paginator(search_results, 10)
+    search_results = Article.objects.order_by('-on_sale')[0:50]
+    search_pages = Paginator(search_results, 12)
     page = request.GET.get('page', 1)
     try:
         search_results_paginated = search_pages.page(page)
@@ -120,7 +119,7 @@ def id_article_view(request, j_type, j_id=0):
 
     try:
         item = Article.objects.get(id=j_id, j_type=j_type)
-    except (Article.DoesNotExist):
+    except Article.DoesNotExist:
         return HttpResponseRedirect("/catalogue/%ss" % j_type.name_eng)
 
     if item.part_of_suite:
@@ -153,7 +152,7 @@ def catalogue_search(request):
             gender = Gender.objects.get(name_eng=cl_data.get('gender'))
             gem = cl_data.get('gem')
 
-            filter_kwargs = {'price__gte': cl_data['price_min'], 'gender': gender}
+            filter_kwargs = {'price__gte': cl_data['price_min'], 'gender__in': [gender, 'universal']}
             if cl_data.get('price_max'): filter_kwargs['price__lte'] = cl_data['price_max']
 
             #
